@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">KIoskApp</string>
+    <string name="welcome_button">Start here</string>
+    <string name="pay_button">Pay Now</string>
+    <string name="menu_screen_header">Choose your menu !!</string>
+    <string name="welcome_screen_header">Welcome to Clover Cafe </string>
+
+</resources>

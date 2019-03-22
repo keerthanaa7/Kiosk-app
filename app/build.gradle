@@ -1,0 +1,25 @@
+group = 'com.clover'
+
+defaultTasks 'clean', 'assembleDebug'
+
+
+apply from: file("${androidBuild}/app.gradle")
+
+android.defaultConfig {
+    minSdkVersion 17
+    targetSdkVersion 28
+}
+android {
+    defaultConfig {
+        multiDexEnabled true
+    }
+}
+
+android {
+    compileSdkVersion 28
+}
+
+dependencies {
+    implementation 'com.clover:common-appcompat:252-SNAPSHOT'
+    implementation 'com.clover.sdk:clover-android-sdk:224-SNAPSHOT'
+}
