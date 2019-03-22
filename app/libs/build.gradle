@@ -1,0 +1,17 @@
+group = 'com.clover'
+
+apply from: file("${androidBuild}/lib.gradle")
+
+android.defaultConfig {
+  minSdkVersion 19
+  targetSdkVersion 25
+}
+
+
+android {
+  compileSdkVersion 25
+}
+
+dependencies {
+  compile 'com.clover.sdk:clover-android-sdk:222'
+}
