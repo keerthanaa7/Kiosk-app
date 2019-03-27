@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/gridview_menu"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-</GridView>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="@string/menu_screen_header"
+        android:textColor="#000000"
+        android:background="#2FCB71"
+        android:textSize="35dp"
+        android:textAlignment="center"
+        android:paddingTop="16dp"/>
+    <GridView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/gridview_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="2"
+        android:gravity="center"
+        android:stretchMode="columnWidth">
+
+    </GridView>
+
+</LinearLayout>

@@ -48,8 +48,21 @@ public class InventoryItemsActivity extends Activity {
     ArrayList<CustomMenu> customMenus = new ArrayList<CustomMenu>();
     for (Item item : MainActivity.getMenuItemsList() ){
       Log.v(TAG, "item :  " + dumpItem(item));
-      customMenus.add(new CustomMenu(item.getName(), item.getPrice(), R.drawable.bbq_bacon_burger));
+
     }
+    List <Item> menuList = MainActivity.getMenuItemsList();
+    customMenus.add(new CustomMenu(menuList.get(0).getName(), (menuList.get(0).getPrice())/100, R.drawable.bbq_bacon_burger));
+    customMenus.add(new CustomMenu(menuList.get(1).getName(), (menuList.get(1).getPrice())/100, R.drawable.cheeseburger));
+    customMenus.add(new CustomMenu(menuList.get(2).getName(), (menuList.get(2).getPrice())/100, R.drawable.cheesy_bacon_burger));
+    customMenus.add(new CustomMenu(menuList.get(3).getName(), (menuList.get(3).getPrice())/100, R.drawable.crispy_chicken_burger));
+    customMenus.add(new CustomMenu(menuList.get(4).getName(), (menuList.get(4).getPrice())/100, R.drawable.grilled_chicken_burger));
+    customMenus.add(new CustomMenu(menuList.get(5).getName(), (menuList.get(5).getPrice())/100, R.drawable.hamburger));
+    customMenus.add(new CustomMenu(menuList.get(6).getName(), (menuList.get(6).getPrice())/100, R.drawable.mushroom_burger));
+    customMenus.add(new CustomMenu(menuList.get(7).getName(), (menuList.get(7).getPrice())/100, R.drawable.double_mushroom_burger));
+    customMenus.add(new CustomMenu(menuList.get(8).getName(), (menuList.get(8).getPrice())/100, R.drawable.bacon_crispy_chicken_burger));
+    customMenus.add(new CustomMenu(menuList.get(9).getName(), (menuList.get(9).getPrice())/100, R.drawable.mushroom_crispy_chicken_burger));
+
+
 
 
     // Create an {@link AndroidFlavorAdapter}, whose data source is a list of
