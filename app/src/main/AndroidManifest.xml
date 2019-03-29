@@ -20,6 +20,9 @@
         <activity android:name=".InventoryItemsActivity"
             android:screenOrientation="portrait">
     </activity>
+        <activity android:name=".SingleMenuActivity"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
