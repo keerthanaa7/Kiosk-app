@@ -64,9 +64,9 @@ public class InventoryItemsActivity extends Activity {
     customMenus.add(new CustomMenu(menuList.get(8).getName(), (menuList.get(8).getPrice())/100, R.drawable.mushroom_burger));
     customMenus.add(new CustomMenu(menuList.get(9).getName(), (menuList.get(9).getPrice())/100, R.drawable.mushroom_crispy_chicken_burger));
     customMenus.add(new CustomMenu(menuList.get(10).getName(), (menuList.get(10).getPrice())/100, R.drawable.turkey_burger));
-  //  customMenus.add(new CustomMenu(menuList.get(11).getName(), (menuList.get(11).getPrice())/100, R.drawable.beef_burger));
-   // customMenus.add(new CustomMenu(menuList.get(12).getName(), (menuList.get(12).getPrice())/100, R.drawable.cheddar_onion_smashed_burger));
-  //  customMenus.add(new CustomMenu(menuList.get(13).getName(), (menuList.get(13).getPrice())/100, R.drawable.chile_stuffed_cheeseburger));
+    customMenus.add(new CustomMenu(menuList.get(11).getName(), (menuList.get(11).getPrice())/100, R.drawable.beef_burger));
+    customMenus.add(new CustomMenu(menuList.get(12).getName(), (menuList.get(12).getPrice())/100, R.drawable.cheddar_onion_smashed_burger));
+    customMenus.add(new CustomMenu(menuList.get(13).getName(), (menuList.get(13).getPrice())/100, R.drawable.chile_stuffed_cheeseburger));
 
 
 
@@ -88,7 +88,7 @@ public class InventoryItemsActivity extends Activity {
         Log.d(TAG, menu.getMenuName() + menu.getmMenuPrice());
         Bundle extras = new Bundle();
         extras.putString("Name", menu.getMenuName());
-        extras.putLong("Price", menu.getmMenuPrice());
+        extras.putDouble("Price", menu.getmMenuPrice());
         extras.putInt("imageId", menu.getImageResourceId());
         menuIntent.putExtras(extras);
         startActivity(menuIntent);

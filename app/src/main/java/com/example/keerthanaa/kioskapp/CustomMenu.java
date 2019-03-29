@@ -4,7 +4,7 @@ public class CustomMenu {
 
   private String mMenuName;
 
-  private Long mMenuPrice;
+  private double mMenuPrice;
 
   // Drawable resource ID
   private int mImageResourceId;
@@ -16,7 +16,7 @@ public class CustomMenu {
    * @param mPrice is the price of the menu
    * @param image is drawable reference ID that corresponds to the menu
    * */
-  public CustomMenu(String mName, Long mPrice, int imageResourceId)
+  public CustomMenu(String mName, double mPrice, int imageResourceId)
   {
     mMenuName = mName;
     mMenuPrice = mPrice;
@@ -33,7 +33,7 @@ public class CustomMenu {
   /**
    * Get the Android version number
    */
-  public Long getmMenuPrice() {
+  public double getmMenuPrice() {
     return mMenuPrice;
   }
 

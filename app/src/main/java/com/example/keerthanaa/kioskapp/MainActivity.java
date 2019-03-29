@@ -99,7 +99,7 @@ public class MainActivity extends Activity {
                             for (int i = 0; i < items.size(); i++) {
                                 String itemId = items.get(i);
                                 // just print out the first few to the console
-                                if (i > 10) {
+                                if (i > 15) {
                                     break;
                                 }
                                 item = inventoryConnector.getItem(itemId);

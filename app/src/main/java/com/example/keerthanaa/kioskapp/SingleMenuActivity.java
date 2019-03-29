@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SingleMenuActivity extends Activity {
 
   private String TAG = SingleMenuActivity.class.getSimpleName();
+  static int menuQuantity = 1;
+  static int minMenuQuantity = 1;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +23,7 @@ public class SingleMenuActivity extends Activity {
     Intent menuIntent = getIntent();
     Bundle extras = menuIntent.getExtras();
     String menuName = extras.getString("Name");
-    Long menuPrice = extras.getLong("Price");
+    Double menuPrice = extras.getDouble("Price");
     int imageId = extras.getInt("imageId");
     Log.d(TAG, menuName + menuPrice);
 
@@ -30,7 +34,41 @@ public class SingleMenuActivity extends Activity {
     menuNameView.setText(menuName);
 
     TextView menuPriceView = (TextView)findViewById(R.id.single_menu_price);
-    menuPriceView.setText("Price : $" + menuPrice.toString());
+    menuPriceView.setText(getResources().getString(R.string.menu_price, menuPrice));
+
+    ImageButton incrementButton = (ImageButton)findViewById(R.id.increment);
+    ImageButton decrementButton = (ImageButton)findViewById(R.id.decrement);
+    TextView menuQuantityView = (TextView)findViewById(R.id.menu_quantity);
+    menuQuantityView.setText(String.valueOf(menuQuantity));
+    menuQuantity = Integer.parseInt(menuQuantityView.getText().toString());
+
+    TextView addToCartView = (TextView)findViewById(R.id.add_cart_text);
+
+    incrementButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        menuQuantity = menuQuantity + 1;
+        menuQuantityView.setText(String.valueOf(menuQuantity));
+        if(addToCartView.getVisibility() == View.GONE){
+          addToCartView.setVisibility(View.VISIBLE);
+        }
+        addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, menuPrice));
+      }
+    });
+
+    decrementButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if(menuQuantity > minMenuQuantity){
+          menuQuantity = menuQuantity - 1;
+          menuQuantityView.setText(String.valueOf(menuQuantity));
+          if(addToCartView.getVisibility() == View.GONE){
+            addToCartView.setVisibility(View.VISIBLE);
+          }
+          addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, menuPrice));
+        }
+      }
+    });
 
   }
 }
