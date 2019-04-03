@@ -12,12 +12,14 @@ import android.widget.TextView;
 public class SingleMenuActivity extends Activity {
 
   private String TAG = SingleMenuActivity.class.getSimpleName();
-  static int menuQuantity = 1;
-  static int minMenuQuantity = 1;
+  int menuQuantity = 1;
+  int minMenuQuantity = 1;
+  double totalPrice = 0;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    Log.d(TAG, "On create single menu activity");
     setContentView(R.layout.activity_single_menu);
 
     Intent menuIntent = getIntent();
@@ -52,7 +54,8 @@ public class SingleMenuActivity extends Activity {
         if(addToCartView.getVisibility() == View.GONE){
           addToCartView.setVisibility(View.VISIBLE);
         }
-        addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, menuPrice));
+        totalPrice = menuQuantity * menuPrice;
+        addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, totalPrice));
       }
     });
 
@@ -65,7 +68,8 @@ public class SingleMenuActivity extends Activity {
           if(addToCartView.getVisibility() == View.GONE){
             addToCartView.setVisibility(View.VISIBLE);
           }
-          addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, menuPrice));
+          totalPrice = menuQuantity * menuPrice;
+          addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, totalPrice));
         }
       }
     });

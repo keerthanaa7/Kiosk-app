@@ -9,6 +9,8 @@ public class CustomMenu {
   // Drawable resource ID
   private int mImageResourceId;
 
+  private String mMenuId;
+
   /*
    * Create a new AndroidFlavor object.
    *
@@ -16,11 +18,12 @@ public class CustomMenu {
    * @param mPrice is the price of the menu
    * @param image is drawable reference ID that corresponds to the menu
    * */
-  public CustomMenu(String mName, double mPrice, int imageResourceId)
+  public CustomMenu(String mName, double mPrice, int imageResourceId, String mId)
   {
     mMenuName = mName;
     mMenuPrice = mPrice;
     mImageResourceId = imageResourceId;
+    mMenuId = mId;
   }
 
   /**
@@ -42,5 +45,13 @@ public class CustomMenu {
    */
   public int getImageResourceId() {
     return mImageResourceId;
+  }
+
+  /**
+   * get the item id
+   * @return string variable containing the id
+   */
+  public String getMenuId() {
+    return mMenuId;
   }
 }
