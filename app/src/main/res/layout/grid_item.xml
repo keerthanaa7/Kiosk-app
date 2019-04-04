@@ -1,17 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Layout for a single Grid item -->
+<?xml version="1.0" encoding="utf-8"?><!-- Layout for a single Grid item -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:orientation="horizontal"
     android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="horizontal"
     android:padding="16dp">
 
     <ImageView
         android:id="@+id/grid_item_icon"
         android:layout_width="150dp"
-        android:layout_height="150dp"/>
+        android:layout_height="150dp" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -22,15 +21,15 @@
 
         <TextView
             android:id="@+id/menu_name"
-            android:textSize="20dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/menu_price"
-            android:textSize="20dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="20dp" />
 
     </LinearLayout>
 

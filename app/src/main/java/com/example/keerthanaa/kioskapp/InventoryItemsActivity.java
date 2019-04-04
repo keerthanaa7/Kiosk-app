@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+
 import com.clover.sdk.util.CloverAccount;
 import com.clover.sdk.v3.inventory.Item;
 import com.clover.sdk.v3.order.LineItem;
@@ -50,20 +51,20 @@ public class InventoryItemsActivity extends Activity {
 
     }
     List<Item> menuList = MainActivity.getMenuItemsList();
-    customMenus.add(new CustomMenu(menuList.get(0).getName(), (menuList.get(0).getPrice()) / 100, R.drawable.bacon_crispy_chicken_burger,(menuList.get(0).getId())));
-    customMenus.add(new CustomMenu(menuList.get(1).getName(), (menuList.get(1).getPrice()) / 100, R.drawable.bbq_bacon_burger,(menuList.get(1).getId())));
-    customMenus.add(new CustomMenu(menuList.get(2).getName(), (menuList.get(2).getPrice()) / 100, R.drawable.cheeseburger, (menuList.get(2).getId())));
-    customMenus.add(new CustomMenu(menuList.get(3).getName(), (menuList.get(3).getPrice()) / 100, R.drawable.cheesy_bacon_burger, (menuList.get(3).getId())));
-    customMenus.add(new CustomMenu(menuList.get(4).getName(), (menuList.get(4).getPrice()) / 100, R.drawable.crispy_chicken_burger, (menuList.get(4).getId())));
-    customMenus.add(new CustomMenu(menuList.get(5).getName(), (menuList.get(5).getPrice()) / 100, R.drawable.double_mushroom_burger,(menuList.get(5).getId())));
-    customMenus.add(new CustomMenu(menuList.get(6).getName(), (menuList.get(6).getPrice()) / 100, R.drawable.grilled_chicken_burger,(menuList.get(6).getId())));
-    customMenus.add(new CustomMenu(menuList.get(7).getName(), (menuList.get(7).getPrice()) / 100, R.drawable.hamburger,(menuList.get(7).getId())));
-    customMenus.add(new CustomMenu(menuList.get(8).getName(), (menuList.get(8).getPrice()) / 100, R.drawable.mushroom_burger, (menuList.get(8).getId())));
-    customMenus.add(new CustomMenu(menuList.get(9).getName(), (menuList.get(9).getPrice()) / 100, R.drawable.mushroom_crispy_chicken_burger,(menuList.get(9).getId())));
-    customMenus.add(new CustomMenu(menuList.get(10).getName(), (menuList.get(10).getPrice()) / 100, R.drawable.turkey_burger,(menuList.get(10).getId())));
-    customMenus.add(new CustomMenu(menuList.get(11).getName(), (menuList.get(11).getPrice()) / 100, R.drawable.beef_burger,(menuList.get(11).getId())));
-    customMenus.add(new CustomMenu(menuList.get(12).getName(), (menuList.get(12).getPrice()) / 100, R.drawable.cheddar_onion_smashed_burger ,(menuList.get(12).getId())));
-    customMenus.add(new CustomMenu(menuList.get(13).getName(), (menuList.get(13).getPrice()) / 100, R.drawable.chile_stuffed_cheeseburger ,(menuList.get(13).getId())));
+    customMenus.add(new CustomMenu(menuList.get(0).getName(), menuList.get(0).getPrice(), R.drawable.bacon_crispy_chicken_burger, (menuList.get(0).getId())));
+    customMenus.add(new CustomMenu(menuList.get(1).getName(), menuList.get(1).getPrice(), R.drawable.bbq_bacon_burger, (menuList.get(1).getId())));
+    customMenus.add(new CustomMenu(menuList.get(2).getName(), menuList.get(2).getPrice(), R.drawable.cheeseburger, (menuList.get(2).getId())));
+    customMenus.add(new CustomMenu(menuList.get(3).getName(), menuList.get(3).getPrice(), R.drawable.cheesy_bacon_burger, (menuList.get(3).getId())));
+    customMenus.add(new CustomMenu(menuList.get(4).getName(), menuList.get(4).getPrice(), R.drawable.crispy_chicken_burger, (menuList.get(4).getId())));
+    customMenus.add(new CustomMenu(menuList.get(5).getName(), menuList.get(5).getPrice(), R.drawable.double_mushroom_burger, (menuList.get(5).getId())));
+    customMenus.add(new CustomMenu(menuList.get(6).getName(), menuList.get(6).getPrice(), R.drawable.grilled_chicken_burger, (menuList.get(6).getId())));
+    customMenus.add(new CustomMenu(menuList.get(7).getName(), menuList.get(7).getPrice(), R.drawable.hamburger, (menuList.get(7).getId())));
+    customMenus.add(new CustomMenu(menuList.get(8).getName(), menuList.get(8).getPrice(), R.drawable.mushroom_burger, (menuList.get(8).getId())));
+    customMenus.add(new CustomMenu(menuList.get(9).getName(), menuList.get(9).getPrice(), R.drawable.mushroom_crispy_chicken_burger, (menuList.get(9).getId())));
+    customMenus.add(new CustomMenu(menuList.get(10).getName(), menuList.get(10).getPrice(), R.drawable.turkey_burger, (menuList.get(10).getId())));
+    customMenus.add(new CustomMenu(menuList.get(11).getName(), menuList.get(11).getPrice(), R.drawable.beef_burger, (menuList.get(11).getId())));
+    customMenus.add(new CustomMenu(menuList.get(12).getName(), menuList.get(12).getPrice(), R.drawable.cheddar_onion_smashed_burger, (menuList.get(12).getId())));
+    customMenus.add(new CustomMenu(menuList.get(13).getName(), menuList.get(13).getPrice(), R.drawable.chile_stuffed_cheeseburger, (menuList.get(13).getId())));
 
 
     // Create an {@link CustomMenuAdapter}, whose data source is a list of
@@ -83,29 +84,29 @@ public class InventoryItemsActivity extends Activity {
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent menuIntent = new Intent(InventoryItemsActivity.this, SingleMenuActivity.class);
         CustomMenu menu = customMenus.get(position);
-        Log.d(TAG, menu.getMenuName() + menu.getmMenuPrice());
+        Log.d(TAG, menu.getMenuName() + menu.getMenuPrice());
         Bundle extras = new Bundle();
         extras.putString("Name", menu.getMenuName());
-        extras.putDouble("Price", menu.getmMenuPrice());
+        extras.putDouble("Price", menu.getMenuPrice());
         extras.putInt("imageId", menu.getImageResourceId());
         menuIntent.putExtras(extras);
-        createOrder(menu.getMenuName(), menu.getMenuId());
+        addLineItemsToOrder(menu.getMenuName(), menu.getMenuId());
         startActivity(menuIntent);
       }
     });
   }
 
-  private void createOrder(String name,String id) {
+  private void addLineItemsToOrder(String name, String id) {
     new AsyncTask<Void, Void, Void>() {
       @Override
       protected Void doInBackground(Void... voids) {
         try {
-          if(order == null){
+          if (order == null) {
             order = orderConnector.createOrder(new Order());
           }
-          lineItem = orderConnector.addFixedPriceLineItem(order.getId(),id, name, null);
+          lineItem = orderConnector.addFixedPriceLineItem(order.getId(), id, name, null);
           if (order.hasLineItems()) {
-            Log.d(TAG,"order has line items");
+            Log.d(TAG, "order has line items");
             lineItemList = new ArrayList<LineItem>(order.getLineItems());
           } else {
             lineItemList = new ArrayList<LineItem>();
@@ -129,5 +130,9 @@ public class InventoryItemsActivity extends Activity {
   protected void onResume() {
     super.onResume();
     Log.d(TAG, "resume");
+  }
+
+  public static List<LineItem> getLineItemsList() {
+    return lineItemList;
   }
 }

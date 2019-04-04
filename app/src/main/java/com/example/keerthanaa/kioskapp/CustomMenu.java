@@ -12,14 +12,14 @@ public class CustomMenu {
   private String mMenuId;
 
   /*
-   * Create a new AndroidFlavor object.
+   * Create a new Custom Menu object.
    *
    * @param mName is the name of the menu
    * @param mPrice is the price of the menu
-   * @param image is drawable reference ID that corresponds to the menu
+   * @param imageResourceId is drawable reference ID that corresponds to the menu
+   * @param mId is the item identifier obtained from inventory connector
    * */
-  public CustomMenu(String mName, double mPrice, int imageResourceId, String mId)
-  {
+  public CustomMenu(String mName, double mPrice, int imageResourceId, String mId) {
     mMenuName = mName;
     mMenuPrice = mPrice;
     mImageResourceId = imageResourceId;
@@ -27,16 +27,16 @@ public class CustomMenu {
   }
 
   /**
-   * Get the name of the mrnu
+   * Get the name of the menu
    */
   public String getMenuName() {
     return mMenuName;
   }
 
   /**
-   * Get the Android version number
+   * Get the price of the menu order
    */
-  public double getmMenuPrice() {
+  public double getMenuPrice() {
     return mMenuPrice;
   }
 
@@ -49,6 +49,7 @@ public class CustomMenu {
 
   /**
    * get the item id
+   *
    * @return string variable containing the id
    */
   public String getMenuId() {

@@ -6,5 +6,13 @@
     <string name="menu_screen_footer">Choose your menu</string>
     <string name="welcome_screen_header">Welcome to Clover Cafe </string>
     <string name="add_items_cart">Add %1$d to cart $ %2$.2f</string>
-    <string name="menu_price">Price : $ %1$.2f</string>
+    <string name="single_menu_price">Price : $ %1$.2f</string>
+    <string name="order_screen_header">Your Cart</string>
+    <string name="restaurant_name">Clover Cafe !!!</string>
+    <string name="order_header">Your order</string>
+    <string name="sub_total_text">Subtotal</string>
+    <string name="tax_text">Tax</string>
+    <string name="total_text">Total</string>
+    <string name="menu_price">$ %1$.2f</string>
+    <string name="checkout_text">Proceed to Checkout</string>
 </resources>

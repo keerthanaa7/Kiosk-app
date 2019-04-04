@@ -9,20 +9,20 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:text="@string/menu_screen_header"
-        android:textColor="#000000"
         android:background="#2FCB71"
-        android:textSize="35dp"
+        android:paddingTop="16dp"
+        android:text="@string/menu_screen_header"
         android:textAlignment="center"
-        android:paddingTop="16dp"/>
-    <GridView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:textColor="#000000"
+        android:textSize="35dp" />
+
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/gridview_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="2"
         android:gravity="center"
+        android:numColumns="2"
         android:stretchMode="columnWidth">
 
     </GridView>

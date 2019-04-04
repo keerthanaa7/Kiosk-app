@@ -9,18 +9,18 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         android:layout_weight="0.05"
         android:text="@string/welcome_screen_header"
-        android:textColor="#000000"
-        android:textSize="35dp"
         android:textAlignment="center"
-        android:layout_marginTop="16dp"/>
+        android:textColor="#000000"
+        android:textSize="35dp" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:src="@drawable/welcome_image"
-        android:layout_weight="0.9" />
+        android:layout_weight="0.9"
+        android:src="@drawable/welcome_image" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,22 +29,23 @@
 
         <ImageView
             android:layout_width="0dp"
-            android:layout_weight="0.2"
             android:layout_height="64dp"
-            android:src="@drawable/ic_clover_os"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp"
+            android:layout_weight="0.2"
+            android:src="@drawable/ic_clover_os" />
+
         <Button
             android:id="@+id/order_button"
             android:layout_width="0dp"
-            android:layout_weight="0.8"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="48dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="0.8"
+            android:gravity="center"
             android:text="@string/welcome_button"
             android:textColor="#000000"
-            android:textSize="30dp"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="48dp"/>
+            android:textSize="30dp" />
     </LinearLayout>
 
 </LinearLayout>
