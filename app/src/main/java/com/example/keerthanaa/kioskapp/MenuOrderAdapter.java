@@ -63,6 +63,9 @@ public class MenuOrderAdapter extends ArrayAdapter<MenuOrder> {
     // set this text on the number TextView
     numberTextView.setText(getContext().getResources().getString(R.string.menu_price, (currentOrder.getOrderPrice())/100));
 
+    TextView quantityTextView = (TextView) listItemView.findViewById(R.id.order_quantity);
+    quantityTextView.setText(getContext().getResources().getString(R.string.order_quantity, currentOrder.getOrderQuantity()));
+
     // Return the whole list item layout (containing 2 TextViews
     // so that it can be shown in the ListView
     return listItemView;

@@ -89,8 +89,9 @@ public class InventoryItemsActivity extends Activity {
         extras.putString("Name", menu.getMenuName());
         extras.putDouble("Price", menu.getMenuPrice());
         extras.putInt("imageId", menu.getImageResourceId());
-        menuIntent.putExtras(extras);
+        extras.putString("menuId", menu.getMenuId());
         addLineItemsToOrder(menu.getMenuName(), menu.getMenuId());
+        menuIntent.putExtras(extras);
         startActivity(menuIntent);
       }
     });

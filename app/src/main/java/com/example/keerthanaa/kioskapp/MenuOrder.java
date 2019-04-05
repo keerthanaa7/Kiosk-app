@@ -6,13 +6,16 @@ public class MenuOrder {
 
   private double mOrderPrice;
 
+  private int mOrderQuantity;
+
   /**
    * @param mName  name of the menu ordered
    * @param mPrice price of the menu ordered
    */
-  public MenuOrder(String mName, double mPrice) {
+  public MenuOrder(String mName, double mPrice, int mQuantity) {
     mOrderName = mName;
     mOrderPrice = mPrice;
+    mOrderQuantity = mQuantity;
   }
 
   /**
@@ -27,6 +30,13 @@ public class MenuOrder {
    */
   public double getOrderPrice() {
     return mOrderPrice;
+  }
+
+  /**
+   * Get price of the menu order
+   */
+  public int getOrderQuantity() {
+    return mOrderQuantity;
   }
 
 }

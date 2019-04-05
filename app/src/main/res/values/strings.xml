@@ -15,4 +15,5 @@
     <string name="total_text">Total</string>
     <string name="menu_price">$ %1$.2f</string>
     <string name="checkout_text">Proceed to Checkout</string>
+    <string name="order_quantity">x %1$d</string>
 </resources>

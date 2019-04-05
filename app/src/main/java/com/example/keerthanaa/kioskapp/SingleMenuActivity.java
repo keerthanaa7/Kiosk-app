@@ -13,9 +13,10 @@ import android.widget.TextView;
 public class SingleMenuActivity extends Activity {
 
   private String TAG = SingleMenuActivity.class.getSimpleName();
-  int menuQuantity = 1;
+  private int menuQuantity = 1;
   int minMenuQuantity = 1;
   double totalPrice = 0;
+  private String menuName, menuId;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +26,9 @@ public class SingleMenuActivity extends Activity {
 
     Intent menuIntent = getIntent();
     Bundle extras = menuIntent.getExtras();
-    String menuName = extras.getString("Name");
-    Double menuPrice = extras.getDouble("Price")/100;
+    menuName = extras.getString("Name");
+    menuId = extras.getString("menuId");
+    Double menuPrice = extras.getDouble("Price") / 100;
     int imageId = extras.getInt("imageId");
     Log.d(TAG, menuName + menuPrice);
 
@@ -48,6 +50,9 @@ public class SingleMenuActivity extends Activity {
     Button addToCartView = (Button) findViewById(R.id.add_cart_text);
     totalPrice = menuQuantity * menuPrice;
     addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, totalPrice));
+
+    Button checkout = (Button) findViewById(R.id.checkout);
+
 
     incrementButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -80,9 +85,21 @@ public class SingleMenuActivity extends Activity {
     addToCartView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        startActivity(new Intent(SingleMenuActivity.this, OrderActivity.class));
+
       }
     });
 
+    checkout.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent orderIntent = new Intent(SingleMenuActivity.this, OrderActivity.class);
+        Bundle extras = new Bundle();
+        extras.putString("orderName", menuName);
+        extras.putInt("orderQuantity", menuQuantity);
+        orderIntent.putExtras(extras);
+        startActivity(orderIntent);
+      }
+    });
   }
+
 }
