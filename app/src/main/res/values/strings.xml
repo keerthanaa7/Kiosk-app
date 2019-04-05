@@ -16,4 +16,7 @@
     <string name="menu_price">$ %1$.2f</string>
     <string name="checkout_text">Proceed to Checkout</string>
     <string name="order_quantity">x %1$d</string>
+    <string name="order_price">$ %1$.2f</string>
+    <string name="tax">$ %1$.2f</string>
+    <string name="total">$ %1$.2f</string>
 </resources>
