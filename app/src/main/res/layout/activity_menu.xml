@@ -20,11 +20,53 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/gridview_menu"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.85"
         android:gravity="center"
         android:numColumns="2"
         android:stretchMode="columnWidth">
 
     </GridView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.15"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/decrement"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="#2FCB71"
+            android:clickable="true"
+            android:src="@drawable/decrement" />
+
+        <TextView
+            android:id="@+id/menu_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:textSize="40dp"
+            android:text="1"/>
+
+        <ImageButton
+            android:id="@+id/increment"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="#2FCB71"
+            android:clickable="true"
+            android:src="@drawable/increment" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/add_cart_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="30dp"
+        android:background="#2FCB71" />
 
 </LinearLayout>

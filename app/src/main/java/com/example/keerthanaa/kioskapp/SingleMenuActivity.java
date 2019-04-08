@@ -13,14 +13,23 @@ import android.widget.TextView;
 public class SingleMenuActivity extends Activity {
 
   private String TAG = SingleMenuActivity.class.getSimpleName();
-  private int menuQuantity = 1;
-  int minMenuQuantity = 1;
-  double totalPrice = 0;
+  //private int menuQuantity = 1;
+ // int minMenuQuantity = 1;
+ // double totalPrice = 0;
   private String menuName, menuId;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
+        // Set the content to appear under the system bars so that the
+        // content doesn't resize when the system bars hide and show.
+        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        // Hide the nav bar and status bar
+        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        | View.SYSTEM_UI_FLAG_FULLSCREEN);
     Log.d(TAG, "On create single menu activity");
     setContentView(R.layout.activity_single_menu);
 
@@ -28,7 +37,7 @@ public class SingleMenuActivity extends Activity {
     Bundle extras = menuIntent.getExtras();
     menuName = extras.getString("Name");
     menuId = extras.getString("menuId");
-    Double menuPrice = extras.getDouble("Price") / 100;
+    Double menuPrice = extras.getDouble("Price");
     int imageId = extras.getInt("imageId");
     Log.d(TAG, menuName + menuPrice);
 
@@ -41,20 +50,19 @@ public class SingleMenuActivity extends Activity {
     TextView menuPriceView = (TextView) findViewById(R.id.single_menu_price);
     menuPriceView.setText(getResources().getString(R.string.single_menu_price, menuPrice));
 
-    ImageButton incrementButton = (ImageButton) findViewById(R.id.increment);
-    ImageButton decrementButton = (ImageButton) findViewById(R.id.decrement);
-    TextView menuQuantityView = (TextView) findViewById(R.id.menu_quantity);
-    menuQuantityView.setText(String.valueOf(menuQuantity));
-    menuQuantity = Integer.parseInt(menuQuantityView.getText().toString());
+   // ImageButton incrementButton = (ImageButton) findViewById(R.id.increment);
+  //  ImageButton decrementButton = (ImageButton) findViewById(R.id.decrement);
+  //  TextView menuQuantityView = (TextView) findViewById(R.id.menu_quantity);
+  //  menuQuantityView.setText(String.valueOf(menuQuantity));
+   // menuQuantity = Integer.parseInt(menuQuantityView.getText().toString());
 
-    Button addToCartView = (Button) findViewById(R.id.add_cart_text);
-    totalPrice = menuQuantity * menuPrice;
-    addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, totalPrice));
+   // Button addToCartView = (Button) findViewById(R.id.add_cart_text);
+  //  totalPrice = menuQuantity * menuPrice;
+  //  addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, totalPrice));
 
     Button checkout = (Button) findViewById(R.id.checkout);
 
-
-    incrementButton.setOnClickListener(new View.OnClickListener() {
+   /* incrementButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         menuQuantity = menuQuantity + 1;
@@ -80,22 +88,21 @@ public class SingleMenuActivity extends Activity {
           addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, totalPrice));
         }
       }
-    });
+    });*/
 
-    addToCartView.setOnClickListener(new View.OnClickListener() {
+  /*  addToCartView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        finish();
 
       }
-    });
+    });*/
 
     checkout.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         Intent orderIntent = new Intent(SingleMenuActivity.this, OrderActivity.class);
         Bundle extras = new Bundle();
-        extras.putString("orderName", menuName);
-        extras.putInt("orderQuantity", menuQuantity);
         orderIntent.putExtras(extras);
         startActivity(orderIntent);
       }

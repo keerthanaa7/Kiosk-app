@@ -3,6 +3,7 @@ package com.example.keerthanaa.kioskapp;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,6 +20,15 @@ public class OrderActivity extends Activity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
+        // Set the content to appear under the system bars so that the
+        // content doesn't resize when the system bars hide and show.
+        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        // Hide the nav bar and status bar
+        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        | View.SYSTEM_UI_FLAG_FULLSCREEN);
     setContentView(R.layout.activity_order);
     Log.d(TAG, "oncreate");
     int orderQuantity, quantity = 1;
@@ -37,12 +47,14 @@ public class OrderActivity extends Activity {
     ArrayList<MenuOrder> menuOrders = new ArrayList<MenuOrder>();
     menuOrderList = InventoryItemsActivity.getLineItemsList();
     for (int i = 0; i < menuOrderList.size(); i++) {
-      lineItem = menuOrderList.get(i);
+     /* lineItem = menuOrderList.get(i);
       if (menuOrderList.get(i).getName().equals(orderName)) {
         quantity = orderQuantity;
         lineItem = lineItem.setUnitQty(quantity);
         menuOrderList.set(i, lineItem);
       }
+      lineItem = lineItem.setUnitQty(quantity);
+      menuOrderList.set(i, lineItem);*/
       menuOrders.add(new MenuOrder(menuOrderList.get(i).getName(), (menuOrderList.get(i).getPrice()) * (menuOrderList.get(i).getUnitQty()), menuOrderList.get(i).getUnitQty()));
       subtotal = subtotal + (menuOrderList.get(i).getPrice()) * (menuOrderList.get(i).getUnitQty());
     }

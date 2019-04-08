@@ -10,7 +10,10 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.clover.sdk.util.CloverAccount;
 import com.clover.sdk.v3.inventory.Item;
@@ -24,10 +27,17 @@ import java.util.List;
 public class InventoryItemsActivity extends Activity {
   private String TAG = InventoryItemsActivity.class.getSimpleName();
   private LineItem lineItem = null;
+  private LineItem currentlineItem = null;
   private OrderConnector orderConnector;
   private Account account;
   private Order order;
   private static List<LineItem> lineItemList;
+  private int menuQuantity = 1;
+  int minMenuQuantity = 1;
+  double totalPrice = 0;
+  Double menuPrice = 0.0;
+  String menuName;
+  int menuImageId;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +70,11 @@ public class InventoryItemsActivity extends Activity {
     customMenus.add(new CustomMenu(menuList.get(6).getName(), menuList.get(6).getPrice(), R.drawable.grilled_chicken_burger, (menuList.get(6).getId())));
     customMenus.add(new CustomMenu(menuList.get(7).getName(), menuList.get(7).getPrice(), R.drawable.hamburger, (menuList.get(7).getId())));
     customMenus.add(new CustomMenu(menuList.get(8).getName(), menuList.get(8).getPrice(), R.drawable.mushroom_burger, (menuList.get(8).getId())));
-    customMenus.add(new CustomMenu(menuList.get(9).getName(), menuList.get(9).getPrice(), R.drawable.mushroom_crispy_chicken_burger, (menuList.get(9).getId())));
-    customMenus.add(new CustomMenu(menuList.get(10).getName(), menuList.get(10).getPrice(), R.drawable.turkey_burger, (menuList.get(10).getId())));
-    customMenus.add(new CustomMenu(menuList.get(11).getName(), menuList.get(11).getPrice(), R.drawable.beef_burger, (menuList.get(11).getId())));
-    customMenus.add(new CustomMenu(menuList.get(12).getName(), menuList.get(12).getPrice(), R.drawable.cheddar_onion_smashed_burger, (menuList.get(12).getId())));
-    customMenus.add(new CustomMenu(menuList.get(13).getName(), menuList.get(13).getPrice(), R.drawable.chile_stuffed_cheeseburger, (menuList.get(13).getId())));
+    //customMenus.add(new CustomMenu(menuList.get(9).getName(), menuList.get(9).getPrice(), R.drawable.mushroom_crispy_chicken_burger, (menuList.get(9).getId())));
+    // customMenus.add(new CustomMenu(menuList.get(10).getName(), menuList.get(10).getPrice(), R.drawable.turkey_burger, (menuList.get(10).getId())));
+    customMenus.add(new CustomMenu(menuList.get(9).getName(), menuList.get(9).getPrice(), R.drawable.beef_burger, (menuList.get(9).getId())));
+    customMenus.add(new CustomMenu(menuList.get(10).getName(), menuList.get(10).getPrice(), R.drawable.cheddar_onion_smashed_burger, (menuList.get(10).getId())));
+    customMenus.add(new CustomMenu(menuList.get(11).getName(), menuList.get(11).getPrice(), R.drawable.chile_stuffed_cheeseburger, (menuList.get(11).getId())));
 
 
     // Create an {@link CustomMenuAdapter}, whose data source is a list of
@@ -78,21 +88,82 @@ public class InventoryItemsActivity extends Activity {
 
 
     account = CloverAccount.getAccount(this);
-    orderConnector = new OrderConnector(this, account, null);
+    ImageButton incrementButton = (ImageButton) findViewById(R.id.increment);
+    ImageButton decrementButton = (ImageButton) findViewById(R.id.decrement);
+    TextView menuQuantityView = (TextView) findViewById(R.id.menu_quantity);
+    Button addToCartView = (Button) findViewById(R.id.add_cart_text);
+
+
     gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent menuIntent = new Intent(InventoryItemsActivity.this, SingleMenuActivity.class);
+
         CustomMenu menu = customMenus.get(position);
         Log.d(TAG, menu.getMenuName() + menu.getMenuPrice());
-        Bundle extras = new Bundle();
-        extras.putString("Name", menu.getMenuName());
-        extras.putDouble("Price", menu.getMenuPrice());
-        extras.putInt("imageId", menu.getImageResourceId());
-        extras.putString("menuId", menu.getMenuId());
+        menuQuantity = 1;
+        menuQuantityView.setText(String.valueOf(menuQuantity));
+        menuPrice = (menu.getMenuPrice()) / 100;
+        totalPrice = menuQuantity * menuPrice;
+        addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, totalPrice));
+        menuName = menu.getMenuName();
+        menuImageId = menu.getImageResourceId();
         addLineItemsToOrder(menu.getMenuName(), menu.getMenuId());
+      }
+    });
+
+    incrementButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        menuQuantity = menuQuantity + 1;
+        menuQuantityView.setText(String.valueOf(menuQuantity));
+        if (addToCartView.getVisibility() == View.GONE) {
+          addToCartView.setVisibility(View.VISIBLE);
+        }
+        totalPrice = menuQuantity * menuPrice;
+        addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, totalPrice));
+        for (int i = 0; i < lineItemList.size(); i++) {
+          currentlineItem = lineItemList.get(i);
+          if (lineItemList.get(i).getName().equals(menuName)) {
+            currentlineItem = currentlineItem.setUnitQty(menuQuantity);
+            lineItemList.set(i, lineItem);
+          }
+        }
+      }
+    });
+
+    decrementButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if (menuQuantity > minMenuQuantity) {
+          menuQuantity = menuQuantity - 1;
+          menuQuantityView.setText(String.valueOf(menuQuantity));
+          if (addToCartView.getVisibility() == View.GONE) {
+            addToCartView.setVisibility(View.VISIBLE);
+          }
+          totalPrice = menuQuantity * menuPrice;
+          addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, totalPrice));
+          for (int i = 0; i < lineItemList.size(); i++) {
+            currentlineItem = lineItemList.get(i);
+            if (lineItemList.get(i).getName().equals(menuName)) {
+              currentlineItem = currentlineItem.setUnitQty(menuQuantity);
+              lineItemList.set(i, lineItem);
+            }
+          }
+        }
+      }
+    });
+
+    addToCartView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent menuIntent = new Intent(InventoryItemsActivity.this, SingleMenuActivity.class);
+        Bundle extras = new Bundle();
+        extras.putString("Name", menuName);
+        extras.putDouble("Price", menuPrice);
+        extras.putInt("imageId", menuImageId);
         menuIntent.putExtras(extras);
         startActivity(menuIntent);
+
       }
     });
   }
@@ -106,6 +177,7 @@ public class InventoryItemsActivity extends Activity {
             order = orderConnector.createOrder(new Order());
           }
           lineItem = orderConnector.addFixedPriceLineItem(order.getId(), id, name, null);
+          lineItem.setUnitQty(menuQuantity);
           if (order.hasLineItems()) {
             Log.d(TAG, "order has line items");
             lineItemList = new ArrayList<LineItem>(order.getLineItems());
@@ -131,9 +203,20 @@ public class InventoryItemsActivity extends Activity {
   protected void onResume() {
     super.onResume();
     Log.d(TAG, "resume");
+    orderConnector = new OrderConnector(this, account, null);
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    if (orderConnector != null) {
+      orderConnector.disconnect();
+      orderConnector = null;
+    }
   }
 
   public static List<LineItem> getLineItemsList() {
     return lineItemList;
   }
+
 }
