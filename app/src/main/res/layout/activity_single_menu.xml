@@ -2,8 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_margin="16dp">
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#2FCB71"
+        android:paddingTop="16dp"
+        android:text="@string/single_menu_screen_header"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="35dp" />
 
     <TextView
         android:id="@+id/single_menu_name"
@@ -33,7 +42,19 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.2"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_margin="16dp">
+
+        <Button
+            android:id="@+id/choose_extra_menu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:textColor="#000000"
+            android:text="@string/choose_extra_menu_text"
+            android:background="#2FCB71"
+            android:textSize="30dp"
+            android:layout_marginRight="16dp"/>
 
 
         <Button

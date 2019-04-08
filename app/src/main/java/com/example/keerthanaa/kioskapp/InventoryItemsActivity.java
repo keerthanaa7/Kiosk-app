@@ -27,20 +27,20 @@ import java.util.List;
 public class InventoryItemsActivity extends Activity {
   private String TAG = InventoryItemsActivity.class.getSimpleName();
   private LineItem lineItem = null;
-  private LineItem currentlineItem = null;
   private OrderConnector orderConnector;
   private Account account;
-  private Order order;
+  Order order;
   private static List<LineItem> lineItemList;
   private int menuQuantity = 1;
   int minMenuQuantity = 1;
   double totalPrice = 0;
   Double menuPrice = 0.0;
-  String menuName;
+  String menuName, menuId;
   int menuImageId;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    Log.d(TAG, "oncreate");
     super.onCreate(savedInstanceState);
     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
         // Set the content to appear under the system bars so that the
@@ -85,6 +85,7 @@ public class InventoryItemsActivity extends Activity {
     // Get a reference to the ListView, and attach the adapter to the listView.
     GridView gridView = (GridView) findViewById(R.id.gridview_menu);
     gridView.setAdapter(menuAdapter);
+    orderConnector = new OrderConnector(this, account, null);
 
 
     account = CloverAccount.getAccount(this);
@@ -104,16 +105,20 @@ public class InventoryItemsActivity extends Activity {
         menuQuantityView.setText(String.valueOf(menuQuantity));
         menuPrice = (menu.getMenuPrice()) / 100;
         totalPrice = menuQuantity * menuPrice;
+        addToCartView.setVisibility(View.VISIBLE);
         addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, totalPrice));
         menuName = menu.getMenuName();
         menuImageId = menu.getImageResourceId();
-        addLineItemsToOrder(menu.getMenuName(), menu.getMenuId());
+        menuId = menu.getMenuId();
+        createOrder();
+        // addLineItemsToOrder(menu.getMenuName(), menu.getMenuId());
       }
     });
 
     incrementButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        Log.d(TAG, "click + button");
         menuQuantity = menuQuantity + 1;
         menuQuantityView.setText(String.valueOf(menuQuantity));
         if (addToCartView.getVisibility() == View.GONE) {
@@ -121,19 +126,13 @@ public class InventoryItemsActivity extends Activity {
         }
         totalPrice = menuQuantity * menuPrice;
         addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, totalPrice));
-        for (int i = 0; i < lineItemList.size(); i++) {
-          currentlineItem = lineItemList.get(i);
-          if (lineItemList.get(i).getName().equals(menuName)) {
-            currentlineItem = currentlineItem.setUnitQty(menuQuantity);
-            lineItemList.set(i, lineItem);
-          }
-        }
       }
     });
 
     decrementButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        Log.d(TAG, "click - button");
         if (menuQuantity > minMenuQuantity) {
           menuQuantity = menuQuantity - 1;
           menuQuantityView.setText(String.valueOf(menuQuantity));
@@ -142,13 +141,6 @@ public class InventoryItemsActivity extends Activity {
           }
           totalPrice = menuQuantity * menuPrice;
           addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, totalPrice));
-          for (int i = 0; i < lineItemList.size(); i++) {
-            currentlineItem = lineItemList.get(i);
-            if (lineItemList.get(i).getName().equals(menuName)) {
-              currentlineItem = currentlineItem.setUnitQty(menuQuantity);
-              lineItemList.set(i, lineItem);
-            }
-          }
         }
       }
     });
@@ -156,6 +148,8 @@ public class InventoryItemsActivity extends Activity {
     addToCartView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        Log.d(TAG, "click add to cart button");
+        addLineItemsToOrder(menuName, menuId);
         Intent menuIntent = new Intent(InventoryItemsActivity.this, SingleMenuActivity.class);
         Bundle extras = new Bundle();
         extras.putString("Name", menuName);
@@ -163,12 +157,11 @@ public class InventoryItemsActivity extends Activity {
         extras.putInt("imageId", menuImageId);
         menuIntent.putExtras(extras);
         startActivity(menuIntent);
-
       }
     });
   }
 
-  private void addLineItemsToOrder(String name, String id) {
+  private void createOrder() {
     new AsyncTask<Void, Void, Void>() {
       @Override
       protected Void doInBackground(Void... voids) {
@@ -176,47 +169,68 @@ public class InventoryItemsActivity extends Activity {
           if (order == null) {
             order = orderConnector.createOrder(new Order());
           }
-          lineItem = orderConnector.addFixedPriceLineItem(order.getId(), id, name, null);
-          lineItem.setUnitQty(menuQuantity);
-          if (order.hasLineItems()) {
-            Log.d(TAG, "order has line items");
-            lineItemList = new ArrayList<LineItem>(order.getLineItems());
-          } else {
-            lineItemList = new ArrayList<LineItem>();
-          }
-          lineItemList.add(lineItem);
-          order.setLineItems(lineItemList);
-          orderConnector.getOrder(order.getId());
         } catch (Exception e) {
           Log.w(TAG, "create order failed", e);
         }
         return null;
       }
     }.execute();
+
   }
 
-  private String dumpItem(Item item) {
-    return item != null ? String.format("%s{id=%s, name=%s, price=%d}", Item.class.getSimpleName(), item.getId(), item.getName(), item.getPrice()) : null;
-  }
-
-  @Override
-  protected void onResume() {
-    super.onResume();
-    Log.d(TAG, "resume");
-    orderConnector = new OrderConnector(this, account, null);
-  }
-
-  @Override
-  protected void onPause() {
-    super.onPause();
-    if (orderConnector != null) {
-      orderConnector.disconnect();
-      orderConnector = null;
+    private void addLineItemsToOrder (String name, String id){
+      new AsyncTask<Void, Void, Void>() {
+        @Override
+        protected Void doInBackground(Void... voids) {
+          try {
+            lineItem = orderConnector.addFixedPriceLineItem(order.getId(), id, name, null);
+            lineItem.setUnitQty(menuQuantity);
+            if (order.hasLineItems()) {
+              Log.d(TAG, "order has line items");
+              lineItemList = new ArrayList<LineItem>(order.getLineItems());
+            } else {
+              lineItemList = new ArrayList<LineItem>();
+            }
+            Log.d(TAG, "add line item to list");
+            lineItemList.add(lineItem);
+            order.setLineItems(lineItemList);
+            orderConnector.getOrder(order.getId());
+          } catch (Exception e) {
+            Log.w(TAG, "create order failed", e);
+          }
+          return null;
+        }
+      }.execute();
     }
-  }
 
-  public static List<LineItem> getLineItemsList() {
-    return lineItemList;
-  }
+    private String dumpItem (Item item){
+      return item != null ? String.format("%s{id=%s, name=%s, price=%d}", Item.class.getSimpleName(), item.getId(), item.getName(), item.getPrice()) : null;
+    }
 
-}
+    @Override
+    protected void onResume () {
+      super.onResume();
+      Log.d(TAG, "resume");
+     // orderConnector = new OrderConnector(this, account, null);
+    }
+
+    @Override
+    protected void onPause () {
+      super.onPause();
+
+    }
+
+    @Override
+    protected void onDestroy () {
+      super.onDestroy();
+      if (orderConnector != null) {
+        orderConnector.disconnect();
+        orderConnector = null;
+      }
+    }
+
+    public static List<LineItem> getLineItemsList () {
+      return lineItemList;
+    }
+
+  }

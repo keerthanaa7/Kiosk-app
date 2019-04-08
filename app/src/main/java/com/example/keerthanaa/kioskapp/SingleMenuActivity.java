@@ -61,6 +61,14 @@ public class SingleMenuActivity extends Activity {
   //  addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, totalPrice));
 
     Button checkout = (Button) findViewById(R.id.checkout);
+    Button extraMenu = (Button) findViewById(R.id.choose_extra_menu);
+    extraMenu.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        finish();
+      }
+    });
+
 
    /* incrementButton.setOnClickListener(new View.OnClickListener() {
       @Override

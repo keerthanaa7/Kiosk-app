@@ -3,6 +3,7 @@
     <string name="welcome_button">Start here</string>
     <string name="pay_button">Pay Now</string>
     <string name="menu_screen_header">Clover Cafe menu !!</string>
+    <string name="single_menu_screen_header">Your selected menu item !!</string>
     <string name="menu_screen_footer">Choose your menu</string>
     <string name="welcome_screen_header">Welcome to Clover Cafe </string>
     <string name="add_items_cart">Add %1$d to cart $ %2$.2f</string>
@@ -19,4 +20,6 @@
     <string name="order_price">$ %1$.2f</string>
     <string name="tax">$ %1$.2f</string>
     <string name="total">$ %1$.2f</string>
+    <string name="choose_extra_menu_text">Choose more items</string>
+
 </resources>
