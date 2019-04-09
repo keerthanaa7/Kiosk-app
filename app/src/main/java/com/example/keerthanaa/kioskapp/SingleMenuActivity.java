@@ -26,25 +26,29 @@ public class SingleMenuActivity extends Activity {
         // Hide the nav bar and status bar
         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         | View.SYSTEM_UI_FLAG_FULLSCREEN);
-    Log.d(TAG, "On create single menu activity");
     setContentView(R.layout.activity_single_menu);
 
     Intent menuIntent = getIntent();
     Bundle extras = menuIntent.getExtras();
-    menuName = extras.getString("Name");
-    menuId = extras.getString("menuId");
-    Double menuPrice = extras.getDouble("Price");
-    int imageId = extras.getInt("imageId");
-    Log.d(TAG, menuName + menuPrice);
+    if (extras == null) {
+      Log.d(TAG, "proceed button clicked");
 
-    ImageView menuImage = (ImageView) findViewById(R.id.single_menu_image);
-    menuImage.setImageResource(imageId);
+    } else {
+      menuName = extras.getString("Name");
+      menuId = extras.getString("menuId");
+      Double menuPrice = extras.getDouble("Price");
+      int imageId = extras.getInt("imageId");
+      Log.d(TAG, menuName + menuPrice);
 
-    TextView menuNameView = (TextView) findViewById(R.id.single_menu_name);
-    menuNameView.setText(menuName);
+      ImageView menuImage = (ImageView) findViewById(R.id.single_menu_image);
+      menuImage.setImageResource(imageId);
 
-    TextView menuPriceView = (TextView) findViewById(R.id.single_menu_price);
-    menuPriceView.setText(getResources().getString(R.string.single_menu_price, menuPrice));
+      TextView menuNameView = (TextView) findViewById(R.id.single_menu_name);
+      menuNameView.setText(menuName);
+
+      TextView menuPriceView = (TextView) findViewById(R.id.single_menu_price);
+      menuPriceView.setText(getResources().getString(R.string.single_menu_price, menuPrice));
+    }
 
     Button checkout = (Button) findViewById(R.id.checkout);
     Button extraMenu = (Button) findViewById(R.id.choose_extra_menu);
@@ -64,6 +68,7 @@ public class SingleMenuActivity extends Activity {
         startActivity(orderIntent);
       }
     });
+
   }
 
 }

@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.clover.sdk.util.CloverAccount;
-import com.clover.sdk.v1.ServiceConnector;
 import com.clover.sdk.v3.inventory.InventoryConnector;
 import com.clover.sdk.v3.inventory.Item;
 
@@ -19,10 +18,6 @@ import java.util.List;
 public class MainActivity extends Activity {
 
   private String TAG = MainActivity.class.getSimpleName();
-
-  private enum ConnectionMethod {
-    SERVICE_CONNECTOR, SERVICE_CONNECTOR_USING_CALLBACKS,
-  }
 
   // this applies only to service wrapper
   private InventoryConnector inventoryConnector;
@@ -121,16 +116,6 @@ public class MainActivity extends Activity {
 
   private String dumpItem(Item item) {
     return item != null ? String.format("%s{id=%s, name=%s, price=%d}", Item.class.getSimpleName(), item.getId(), item.getName(), item.getPrice()) : null;
-  }
-
-  @Override
-  protected void onStop() {
-    super.onStop();
-  }
-
-  @Override
-  protected void onPause() {
-    super.onPause();
   }
 
   @Override

@@ -30,7 +30,6 @@ public class OrderActivity extends Activity {
         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         | View.SYSTEM_UI_FLAG_FULLSCREEN);
     setContentView(R.layout.activity_order);
-    Log.d(TAG, "oncreate");
     Double total, tax;
 
     // Create an {@link MenuOrderAdapter}, whose data source is a list of
@@ -39,10 +38,13 @@ public class OrderActivity extends Activity {
 
     ArrayList<MenuOrder> menuOrders = new ArrayList<MenuOrder>();
     menuOrderList = InventoryItemsActivity.getLineItemsList();
-    for (int i = 0; i < menuOrderList.size(); i++) {
-      menuOrders.add(new MenuOrder(menuOrderList.get(i).getName(), (menuOrderList.get(i).getPrice()) * (menuOrderList.get(i).getUnitQty()), menuOrderList.get(i).getUnitQty()));
-      subtotal = subtotal + (menuOrderList.get(i).getPrice()) * (menuOrderList.get(i).getUnitQty());
+    if (menuOrderList != null) {
+      for (int i = 0; i < menuOrderList.size(); i++) {
+        menuOrders.add(new MenuOrder(menuOrderList.get(i).getName(), (menuOrderList.get(i).getPrice()) * (menuOrderList.get(i).getUnitQty()), menuOrderList.get(i).getUnitQty()));
+        subtotal = subtotal + (menuOrderList.get(i).getPrice()) * (menuOrderList.get(i).getUnitQty());
+      }
     }
+
     subtotal = subtotal / 100;
     tax = subtotal * .15;
     total = subtotal + tax;
