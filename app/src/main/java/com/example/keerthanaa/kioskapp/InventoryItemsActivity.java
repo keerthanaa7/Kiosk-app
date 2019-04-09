@@ -83,10 +83,12 @@ public class InventoryItemsActivity extends Activity {
     // Get a reference to the ListView, and attach the adapter to the listView.
     GridView gridView = (GridView) findViewById(R.id.gridview_menu);
     gridView.setAdapter(menuAdapter);
-    orderConnector = new OrderConnector(this, account, null);
-
 
     account = CloverAccount.getAccount(this);
+    orderConnector = new OrderConnector(this, account, null);
+    orderConnector.connect();
+
+
     ImageButton incrementButton = (ImageButton) findViewById(R.id.increment);
     ImageButton decrementButton = (ImageButton) findViewById(R.id.decrement);
     TextView menuQuantityView = (TextView) findViewById(R.id.menu_quantity);
@@ -110,7 +112,6 @@ public class InventoryItemsActivity extends Activity {
         menuName = menu.getMenuName();
         menuImageId = menu.getImageResourceId();
         menuId = menu.getMenuId();
-        createOrder();
       }
     });
 
@@ -166,6 +167,8 @@ public class InventoryItemsActivity extends Activity {
         startActivity(menuIntent);
       }
     });
+
+    createOrder();
   }
 
   private void createOrder() {

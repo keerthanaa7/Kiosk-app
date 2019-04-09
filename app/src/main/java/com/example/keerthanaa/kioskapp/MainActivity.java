@@ -27,12 +27,7 @@ public class MainActivity extends Activity {
   // this applies only to service wrapper
   private InventoryConnector inventoryConnector;
 
-  // this is used for all connection methods
-  private boolean serviceIsBound = false;
   private static List<Item> menuItemsList = new ArrayList<Item>();
-
-  // Change this variable if you want to use a different connection method
-  private ConnectionMethod connectionMethod = ConnectionMethod.SERVICE_CONNECTOR;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +45,9 @@ public class MainActivity extends Activity {
 
     setContentView(R.layout.activity_main);
 
+    inventoryConnector = new InventoryConnector(this, CloverAccount.getAccount(this), null);
+    inventoryConnector.connect();
+
     Button orderButton = (Button) findViewById(R.id.order_button);
     orderButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -65,30 +63,30 @@ public class MainActivity extends Activity {
     super.onResume();
     menuItemsList.clear();
     Log.d(TAG, "onResume");
-    connectToServiceConnector();
+    fetchObjectsFromServiceConnector();
   }
 
-  private void connectToServiceConnector() {
-    inventoryConnector = new InventoryConnector(this, CloverAccount.getAccount(this), new ServiceConnector.OnServiceConnectedListener() {
-      @Override
-      public void onServiceConnected(ServiceConnector connector) {
-        serviceIsBound = true;
-        Log.v(TAG, "Connected to service via wrapper");
-        fetchObjectsFromServiceConnector();
-      }
-
-      @Override
-      public void onServiceDisconnected(ServiceConnector connector) {
-        Log.v(TAG, "Disconnected from service via wrapper");
-        serviceIsBound = false;
-      }
-    });
-    inventoryConnector.connect();
-  }
+//  private void connectToServiceConnector() {
+//    inventoryConnector = new InventoryConnector(this, CloverAccount.getAccount(this), new ServiceConnector.OnServiceConnectedListener() {
+//      @Override
+//      public void onServiceConnected(ServiceConnector connector) {
+//        serviceIsBound = true;
+//        Log.v(TAG, "Connected to service via wrapper");
+//        //fetchObjectsFromServiceConnector();
+//      }
+//
+//      @Override
+//      public void onServiceDisconnected(ServiceConnector connector) {
+//        Log.v(TAG, "Disconnected from service via wrapper");
+//        serviceIsBound = false;
+//      }
+//    });
+//    inventoryConnector.connect();
+//  }
 
 
   private void fetchObjectsFromServiceConnector() {
-    if (serviceIsBound && inventoryConnector != null) {
+    if (inventoryConnector != null) {
       new AsyncTask<Void, Void, Void>() {
         @Override
         protected Void doInBackground(Void... params) {
@@ -132,21 +130,15 @@ public class MainActivity extends Activity {
 
   @Override
   protected void onPause() {
-    switch (connectionMethod) {
-      case SERVICE_CONNECTOR:
-      case SERVICE_CONNECTOR_USING_CALLBACKS:
-        if (inventoryConnector != null) {
-          inventoryConnector.disconnect();
-          inventoryConnector = null;
-        }
-        break;
-    }
-
-    if (serviceIsBound) {
-      serviceIsBound = false;
-    }
-
     super.onPause();
   }
 
+  @Override
+  protected void onDestroy() {
+    if (inventoryConnector != null) {
+      inventoryConnector.disconnect();
+      inventoryConnector = null;
+    }
+    super.onDestroy();
+  }
 }
