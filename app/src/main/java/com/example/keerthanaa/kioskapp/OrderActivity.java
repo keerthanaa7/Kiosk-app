@@ -31,36 +31,21 @@ public class OrderActivity extends Activity {
         | View.SYSTEM_UI_FLAG_FULLSCREEN);
     setContentView(R.layout.activity_order);
     Log.d(TAG, "oncreate");
-    int orderQuantity, quantity = 1;
-    Double price, total, tax;
-    String orderName;
-    LineItem lineItem = null;
-
+    Double total, tax;
 
     // Create an {@link MenuOrderAdapter}, whose data source is a list of
     // {@link MenuOrder}s. The adapter knows how to create list item views for each item
     // in the list.
-    Bundle extras = getIntent().getExtras();
-    orderQuantity = extras.getInt("orderQuantity");
-    orderName = extras.getString("orderName");
 
     ArrayList<MenuOrder> menuOrders = new ArrayList<MenuOrder>();
     menuOrderList = InventoryItemsActivity.getLineItemsList();
     for (int i = 0; i < menuOrderList.size(); i++) {
-     /* lineItem = menuOrderList.get(i);
-      if (menuOrderList.get(i).getName().equals(orderName)) {
-        quantity = orderQuantity;
-        lineItem = lineItem.setUnitQty(quantity);
-        menuOrderList.set(i, lineItem);
-      }
-      lineItem = lineItem.setUnitQty(quantity);
-      menuOrderList.set(i, lineItem);*/
       menuOrders.add(new MenuOrder(menuOrderList.get(i).getName(), (menuOrderList.get(i).getPrice()) * (menuOrderList.get(i).getUnitQty()), menuOrderList.get(i).getUnitQty()));
       subtotal = subtotal + (menuOrderList.get(i).getPrice()) * (menuOrderList.get(i).getUnitQty());
     }
-    subtotal = subtotal /100;
-    tax =  subtotal * .15;
-    total =  subtotal + tax;
+    subtotal = subtotal / 100;
+    tax = subtotal * .15;
+    total = subtotal + tax;
     MenuOrderAdapter orderAdapter = new MenuOrderAdapter(this, menuOrders);
 
     // Get a reference to the ListView, and attach the adapter to the listView.

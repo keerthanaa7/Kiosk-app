@@ -70,8 +70,6 @@ public class InventoryItemsActivity extends Activity {
     customMenus.add(new CustomMenu(menuList.get(6).getName(), menuList.get(6).getPrice(), R.drawable.grilled_chicken_burger, (menuList.get(6).getId())));
     customMenus.add(new CustomMenu(menuList.get(7).getName(), menuList.get(7).getPrice(), R.drawable.hamburger, (menuList.get(7).getId())));
     customMenus.add(new CustomMenu(menuList.get(8).getName(), menuList.get(8).getPrice(), R.drawable.mushroom_burger, (menuList.get(8).getId())));
-    //customMenus.add(new CustomMenu(menuList.get(9).getName(), menuList.get(9).getPrice(), R.drawable.mushroom_crispy_chicken_burger, (menuList.get(9).getId())));
-    // customMenus.add(new CustomMenu(menuList.get(10).getName(), menuList.get(10).getPrice(), R.drawable.turkey_burger, (menuList.get(10).getId())));
     customMenus.add(new CustomMenu(menuList.get(9).getName(), menuList.get(9).getPrice(), R.drawable.beef_burger, (menuList.get(9).getId())));
     customMenus.add(new CustomMenu(menuList.get(10).getName(), menuList.get(10).getPrice(), R.drawable.cheddar_onion_smashed_burger, (menuList.get(10).getId())));
     customMenus.add(new CustomMenu(menuList.get(11).getName(), menuList.get(11).getPrice(), R.drawable.chile_stuffed_cheeseburger, (menuList.get(11).getId())));
@@ -93,6 +91,7 @@ public class InventoryItemsActivity extends Activity {
     ImageButton decrementButton = (ImageButton) findViewById(R.id.decrement);
     TextView menuQuantityView = (TextView) findViewById(R.id.menu_quantity);
     Button addToCartView = (Button) findViewById(R.id.add_cart_text);
+    Button proceedView = (Button) findViewById(R.id.proceed);
 
 
     gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -106,12 +105,12 @@ public class InventoryItemsActivity extends Activity {
         menuPrice = (menu.getMenuPrice()) / 100;
         totalPrice = menuQuantity * menuPrice;
         addToCartView.setVisibility(View.VISIBLE);
+        proceedView.setVisibility(View.VISIBLE);
         addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, totalPrice));
         menuName = menu.getMenuName();
         menuImageId = menu.getImageResourceId();
         menuId = menu.getMenuId();
         createOrder();
-        // addLineItemsToOrder(menu.getMenuName(), menu.getMenuId());
       }
     });
 
@@ -159,6 +158,14 @@ public class InventoryItemsActivity extends Activity {
         startActivity(menuIntent);
       }
     });
+
+    proceedView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent menuIntent = new Intent(InventoryItemsActivity.this, SingleMenuActivity.class);
+        startActivity(menuIntent);
+      }
+    });
   }
 
   private void createOrder() {
@@ -178,59 +185,58 @@ public class InventoryItemsActivity extends Activity {
 
   }
 
-    private void addLineItemsToOrder (String name, String id){
-      new AsyncTask<Void, Void, Void>() {
-        @Override
-        protected Void doInBackground(Void... voids) {
-          try {
-            lineItem = orderConnector.addFixedPriceLineItem(order.getId(), id, name, null);
-            lineItem.setUnitQty(menuQuantity);
-            if (order.hasLineItems()) {
-              Log.d(TAG, "order has line items");
-              lineItemList = new ArrayList<LineItem>(order.getLineItems());
-            } else {
-              lineItemList = new ArrayList<LineItem>();
-            }
-            Log.d(TAG, "add line item to list");
-            lineItemList.add(lineItem);
-            order.setLineItems(lineItemList);
-            orderConnector.getOrder(order.getId());
-          } catch (Exception e) {
-            Log.w(TAG, "create order failed", e);
+  private void addLineItemsToOrder(String name, String id) {
+    new AsyncTask<Void, Void, Void>() {
+      @Override
+      protected Void doInBackground(Void... voids) {
+        try {
+          lineItem = orderConnector.addFixedPriceLineItem(order.getId(), id, name, null);
+          lineItem.setUnitQty(menuQuantity);
+          if (order.hasLineItems()) {
+            Log.d(TAG, "order has line items");
+            lineItemList = new ArrayList<LineItem>(order.getLineItems());
+          } else {
+            lineItemList = new ArrayList<LineItem>();
           }
-          return null;
+          Log.d(TAG, "add line item to list");
+          lineItemList.add(lineItem);
+          order.setLineItems(lineItemList);
+          orderConnector.getOrder(order.getId());
+        } catch (Exception e) {
+          Log.w(TAG, "create order failed", e);
         }
-      }.execute();
-    }
-
-    private String dumpItem (Item item){
-      return item != null ? String.format("%s{id=%s, name=%s, price=%d}", Item.class.getSimpleName(), item.getId(), item.getName(), item.getPrice()) : null;
-    }
-
-    @Override
-    protected void onResume () {
-      super.onResume();
-      Log.d(TAG, "resume");
-     // orderConnector = new OrderConnector(this, account, null);
-    }
-
-    @Override
-    protected void onPause () {
-      super.onPause();
-
-    }
-
-    @Override
-    protected void onDestroy () {
-      super.onDestroy();
-      if (orderConnector != null) {
-        orderConnector.disconnect();
-        orderConnector = null;
+        return null;
       }
-    }
+    }.execute();
+  }
 
-    public static List<LineItem> getLineItemsList () {
-      return lineItemList;
-    }
+  private String dumpItem(Item item) {
+    return item != null ? String.format("%s{id=%s, name=%s, price=%d}", Item.class.getSimpleName(), item.getId(), item.getName(), item.getPrice()) : null;
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    Log.d(TAG, "resume");
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
 
   }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    if (orderConnector != null) {
+      orderConnector.disconnect();
+      orderConnector = null;
+    }
+  }
+
+  public static List<LineItem> getLineItemsList() {
+    return lineItemList;
+  }
+
+}

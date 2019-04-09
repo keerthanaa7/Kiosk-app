@@ -6,16 +6,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SingleMenuActivity extends Activity {
 
   private String TAG = SingleMenuActivity.class.getSimpleName();
-  //private int menuQuantity = 1;
- // int minMenuQuantity = 1;
- // double totalPrice = 0;
   private String menuName, menuId;
 
   @Override
@@ -50,16 +46,6 @@ public class SingleMenuActivity extends Activity {
     TextView menuPriceView = (TextView) findViewById(R.id.single_menu_price);
     menuPriceView.setText(getResources().getString(R.string.single_menu_price, menuPrice));
 
-   // ImageButton incrementButton = (ImageButton) findViewById(R.id.increment);
-  //  ImageButton decrementButton = (ImageButton) findViewById(R.id.decrement);
-  //  TextView menuQuantityView = (TextView) findViewById(R.id.menu_quantity);
-  //  menuQuantityView.setText(String.valueOf(menuQuantity));
-   // menuQuantity = Integer.parseInt(menuQuantityView.getText().toString());
-
-   // Button addToCartView = (Button) findViewById(R.id.add_cart_text);
-  //  totalPrice = menuQuantity * menuPrice;
-  //  addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, totalPrice));
-
     Button checkout = (Button) findViewById(R.id.checkout);
     Button extraMenu = (Button) findViewById(R.id.choose_extra_menu);
     extraMenu.setOnClickListener(new View.OnClickListener() {
@@ -68,43 +54,6 @@ public class SingleMenuActivity extends Activity {
         finish();
       }
     });
-
-
-   /* incrementButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        menuQuantity = menuQuantity + 1;
-        menuQuantityView.setText(String.valueOf(menuQuantity));
-        if (addToCartView.getVisibility() == View.GONE) {
-          addToCartView.setVisibility(View.VISIBLE);
-        }
-        totalPrice = menuQuantity * menuPrice;
-        addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, totalPrice));
-      }
-    });
-
-    decrementButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        if (menuQuantity > minMenuQuantity) {
-          menuQuantity = menuQuantity - 1;
-          menuQuantityView.setText(String.valueOf(menuQuantity));
-          if (addToCartView.getVisibility() == View.GONE) {
-            addToCartView.setVisibility(View.VISIBLE);
-          }
-          totalPrice = menuQuantity * menuPrice;
-          addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, totalPrice));
-        }
-      }
-    });*/
-
-  /*  addToCartView.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        finish();
-
-      }
-    });*/
 
     checkout.setOnClickListener(new View.OnClickListener() {
       @Override

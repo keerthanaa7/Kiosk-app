@@ -62,8 +62,8 @@ public class CustomMenuAdapter extends ArrayAdapter<CustomMenu> {
     TextView numberTextView = (TextView) gridItemView.findViewById(R.id.menu_price);
     // Get the menu price from the current CustomMenu object and
     // set this text on the number TextView
-    numberTextView.setText(getContext().getResources().getString(R.string.menu_price, (currentMenu.getMenuPrice())/100));
-   // numberTextView.setText("$" + Double.toString(currentMenu.getmMenuPrice()));
+    numberTextView.setText(getContext().getResources().getString(R.string.menu_price, (currentMenu.getMenuPrice()) / 100));
+    // numberTextView.setText("$" + Double.toString(currentMenu.getmMenuPrice()));
 
     // Find the ImageView in the list_item.xml layout with the ID list_item_icon
     ImageView iconView = (ImageView) gridItemView.findViewById(R.id.grid_item_icon);

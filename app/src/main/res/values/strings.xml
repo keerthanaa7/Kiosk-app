@@ -21,5 +21,6 @@
     <string name="tax">$ %1$.2f</string>
     <string name="total">$ %1$.2f</string>
     <string name="choose_extra_menu_text">Choose more items</string>
+    <string name="proceed_text">Proceed</string>
 
 </resources>
