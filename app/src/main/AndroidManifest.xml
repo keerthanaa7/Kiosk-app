@@ -23,7 +23,9 @@
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".SingleMenuActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:noHistory="true">
+        </activity>
         <activity
             android:name=".OrderActivity"
             android:screenOrientation="portrait"></activity>

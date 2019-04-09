@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.clover.sdk.util.CloverAccount;
@@ -94,6 +95,7 @@ public class InventoryItemsActivity extends Activity {
     TextView menuQuantityView = (TextView) findViewById(R.id.menu_quantity);
     Button addToCartView = (Button) findViewById(R.id.add_cart_text);
     Button proceedView = (Button) findViewById(R.id.proceed);
+    LinearLayout menuQuantityLayout = (LinearLayout)findViewById(R.id.menu_quantity_layout);
 
 
     gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -107,6 +109,9 @@ public class InventoryItemsActivity extends Activity {
         menuPrice = (menu.getMenuPrice()) / 100;
         totalPrice = menuQuantity * menuPrice;
         addToCartView.setVisibility(View.VISIBLE);
+        if(menuQuantityLayout.getVisibility() == View.GONE){
+          menuQuantityLayout.setVisibility(View.VISIBLE);
+        }
         proceedView.setVisibility(View.VISIBLE);
         addToCartView.setText(getResources().getString(R.string.add_items_cart, menuQuantity, totalPrice));
         menuName = menu.getMenuName();
