@@ -12,7 +12,7 @@ import android.widget.TextView;
 public class SingleMenuActivity extends Activity {
 
   private String TAG = SingleMenuActivity.class.getSimpleName();
-  private String menuName, menuId;
+  private String menuName;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +31,9 @@ public class SingleMenuActivity extends Activity {
     Intent menuIntent = getIntent();
     Bundle extras = menuIntent.getExtras();
     if (extras == null) {
-      Log.d(TAG, "proceed button clicked");
 
     } else {
       menuName = extras.getString("Name");
-      menuId = extras.getString("menuId");
       Double menuPrice = extras.getDouble("Price");
       int imageId = extras.getInt("imageId");
       Log.d(TAG, menuName + menuPrice);
@@ -50,6 +48,7 @@ public class SingleMenuActivity extends Activity {
       menuPriceView.setText(getResources().getString(R.string.single_menu_price, menuPrice));
     }
 
+
     Button checkout = (Button) findViewById(R.id.checkout);
     Button extraMenu = (Button) findViewById(R.id.choose_extra_menu);
     extraMenu.setOnClickListener(new View.OnClickListener() {
@@ -63,8 +62,6 @@ public class SingleMenuActivity extends Activity {
       @Override
       public void onClick(View v) {
         Intent orderIntent = new Intent(SingleMenuActivity.this, OrderActivity.class);
-        Bundle extras = new Bundle();
-        orderIntent.putExtras(extras);
         startActivity(orderIntent);
       }
     });

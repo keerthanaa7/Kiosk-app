@@ -61,25 +61,6 @@ public class MainActivity extends Activity {
     fetchObjectsFromServiceConnector();
   }
 
-//  private void connectToServiceConnector() {
-//    inventoryConnector = new InventoryConnector(this, CloverAccount.getAccount(this), new ServiceConnector.OnServiceConnectedListener() {
-//      @Override
-//      public void onServiceConnected(ServiceConnector connector) {
-//        serviceIsBound = true;
-//        Log.v(TAG, "Connected to service via wrapper");
-//        //fetchObjectsFromServiceConnector();
-//      }
-//
-//      @Override
-//      public void onServiceDisconnected(ServiceConnector connector) {
-//        Log.v(TAG, "Disconnected from service via wrapper");
-//        serviceIsBound = false;
-//      }
-//    });
-//    inventoryConnector.connect();
-//  }
-
-
   private void fetchObjectsFromServiceConnector() {
     if (inventoryConnector != null) {
       new AsyncTask<Void, Void, Void>() {

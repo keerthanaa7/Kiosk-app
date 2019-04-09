@@ -168,8 +168,8 @@ public class InventoryItemsActivity extends Activity {
     proceedView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent menuIntent = new Intent(InventoryItemsActivity.this, SingleMenuActivity.class);
-        startActivity(menuIntent);
+        Intent orderIntent = new Intent(InventoryItemsActivity.this, OrderActivity.class);
+        startActivity(orderIntent);
       }
     });
 
@@ -241,6 +241,7 @@ public class InventoryItemsActivity extends Activity {
       orderConnector.disconnect();
       orderConnector = null;
     }
+    lineItemList.clear();
   }
 
   public static List<LineItem> getLineItemsList() {
