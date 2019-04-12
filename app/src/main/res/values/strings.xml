@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">KIoskApp</string>
-    <string name="welcome_button">Start here</string>
+    <string name="welcome_button">Start</string>
     <string name="pay_button">Pay Now</string>
     <string name="menu_screen_header">Clover Cafe menu !!</string>
     <string name="single_menu_screen_header">Your selected menu item !!</string>
@@ -23,5 +23,7 @@
     <string name="choose_extra_menu_text">Choose more items</string>
     <string name="proceed_text">Proceed without selecting</string>
     <string name="back_text">Back</string>
+    <string name="pay_success">$ %1$.2f payment successful.
+        Thank you for your payment</string>
 
 </resources>

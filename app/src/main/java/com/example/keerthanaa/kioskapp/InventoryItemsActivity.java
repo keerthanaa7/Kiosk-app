@@ -66,15 +66,15 @@ public class InventoryItemsActivity extends Activity {
     customMenus.add(new CustomMenu(menuList.get(0).getName(), menuList.get(0).getPrice(), R.drawable.bacon_crispy_chicken_burger, (menuList.get(0).getId())));
     customMenus.add(new CustomMenu(menuList.get(1).getName(), menuList.get(1).getPrice(), R.drawable.bbq_bacon_burger, (menuList.get(1).getId())));
     customMenus.add(new CustomMenu(menuList.get(2).getName(), menuList.get(2).getPrice(), R.drawable.cheeseburger, (menuList.get(2).getId())));
-    customMenus.add(new CustomMenu(menuList.get(3).getName(), menuList.get(3).getPrice(), R.drawable.cheesy_bacon_burger, (menuList.get(3).getId())));
+    customMenus.add(new CustomMenu(menuList.get(3).getName(), menuList.get(3).getPrice(), R.drawable.coke, (menuList.get(3).getId())));
     customMenus.add(new CustomMenu(menuList.get(4).getName(), menuList.get(4).getPrice(), R.drawable.crispy_chicken_burger, (menuList.get(4).getId())));
     customMenus.add(new CustomMenu(menuList.get(5).getName(), menuList.get(5).getPrice(), R.drawable.double_mushroom_burger, (menuList.get(5).getId())));
-    customMenus.add(new CustomMenu(menuList.get(6).getName(), menuList.get(6).getPrice(), R.drawable.grilled_chicken_burger, (menuList.get(6).getId())));
-    customMenus.add(new CustomMenu(menuList.get(7).getName(), menuList.get(7).getPrice(), R.drawable.hamburger, (menuList.get(7).getId())));
-    customMenus.add(new CustomMenu(menuList.get(8).getName(), menuList.get(8).getPrice(), R.drawable.mushroom_burger, (menuList.get(8).getId())));
-    customMenus.add(new CustomMenu(menuList.get(9).getName(), menuList.get(9).getPrice(), R.drawable.beef_burger, (menuList.get(9).getId())));
-    customMenus.add(new CustomMenu(menuList.get(10).getName(), menuList.get(10).getPrice(), R.drawable.cheddar_onion_smashed_burger, (menuList.get(10).getId())));
-    customMenus.add(new CustomMenu(menuList.get(11).getName(), menuList.get(11).getPrice(), R.drawable.chile_stuffed_cheeseburger, (menuList.get(11).getId())));
+    customMenus.add(new CustomMenu(menuList.get(6).getName(), menuList.get(6).getPrice(), R.drawable.fanta, (menuList.get(6).getId())));
+    customMenus.add(new CustomMenu(menuList.get(7).getName(), menuList.get(7).getPrice(), R.drawable.frosted_coke, (menuList.get(7).getId())));
+    customMenus.add(new CustomMenu(menuList.get(8).getName(), menuList.get(8).getPrice(), R.drawable.grilled_chicken_burger, (menuList.get(8).getId())));
+    customMenus.add(new CustomMenu(menuList.get(9).getName(), menuList.get(9).getPrice(), R.drawable.hamburger, (menuList.get(9).getId())));
+    customMenus.add(new CustomMenu(menuList.get(10).getName(), menuList.get(10).getPrice(), R.drawable.mushroom_burger, (menuList.get(10).getId())));
+    customMenus.add(new CustomMenu(menuList.get(11).getName(), menuList.get(11).getPrice(), R.drawable.vanilla_coffe, (menuList.get(11).getId())));
 
 
     // Create an {@link CustomMenuAdapter}, whose data source is a list of

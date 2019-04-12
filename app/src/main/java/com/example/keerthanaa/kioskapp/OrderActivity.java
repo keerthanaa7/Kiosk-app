@@ -142,7 +142,10 @@ public class OrderActivity extends Activity {
       String paymentId = data.getStringExtra(Intents.EXTRA_PAYMENT_ID);
       String orderId = data.getStringExtra(Intents.EXTRA_ORDER_ID);
 
-      Toast.makeText(this, "Payment: " + payment.getJSONObject().toString(), Toast.LENGTH_LONG).show();
+     // Toast.makeText(this, "Payment: " + payment.getJSONObject().toString(), Toast.LENGTH_LONG).show();
+      Intent payIntent = new Intent(OrderActivity.this, PaymentActivity.class);
+      payIntent.putExtra("total", total);
+      startActivity(payIntent);
     }
     super.onActivityResult(requestCode, resultCode, data);
   }
