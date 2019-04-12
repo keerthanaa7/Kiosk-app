@@ -12,7 +12,7 @@ import android.widget.TextView;
 public class SingleMenuActivity extends Activity {
 
   private String TAG = SingleMenuActivity.class.getSimpleName();
-  private String menuName;
+  private String menuName, orderId;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,7 @@ public class SingleMenuActivity extends Activity {
     } else {
       menuName = extras.getString("Name");
       Double menuPrice = extras.getDouble("Price");
+      orderId = extras.getString("orderId");
       int imageId = extras.getInt("imageId");
       Log.d(TAG, menuName + menuPrice);
 
@@ -62,6 +63,7 @@ public class SingleMenuActivity extends Activity {
       @Override
       public void onClick(View v) {
         Intent orderIntent = new Intent(SingleMenuActivity.this, OrderActivity.class);
+        orderIntent.putExtra("orderId", orderId);
         startActivity(orderIntent);
       }
     });

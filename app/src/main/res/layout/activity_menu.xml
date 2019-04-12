@@ -9,11 +9,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="#2FCB71"
+        android:background="@color/main_green"
         android:paddingTop="16dp"
         android:text="@string/menu_screen_header"
         android:textAlignment="center"
-        android:textColor="#000000"
+        android:textColor="@color/base_button_text_color_selector"
         android:textSize="35dp" />
 
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -41,9 +41,9 @@
             android:id="@+id/decrement"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="#2FCB71"
             android:clickable="true"
-            android:src="@drawable/decrement" />
+            android:src="@drawable/decrement"
+            android:background="@color/main_green"/>
 
         <TextView
             android:id="@+id/menu_quantity"
@@ -52,15 +52,16 @@
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
             android:textSize="40dp"
-            android:text="1"/>
+            android:text="1"
+            android:textColor="@color/base_button_text_color_selector"/>
 
         <ImageButton
             android:id="@+id/increment"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="#2FCB71"
             android:clickable="true"
-            android:src="@drawable/increment" />
+            android:src="@drawable/increment"
+            android:background="@color/main_green"/>
     </LinearLayout>
 
     <LinearLayout
@@ -71,26 +72,22 @@
         android:layout_margin="16dp">
 
         <Button
+            style="@style/Button"
             android:id="@+id/add_cart_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.025"
-            android:textColor="#000000"
-            android:background="#2FCB71"
-            android:textSize="30dp"
             android:layout_marginRight="16dp"
             android:visibility="gone"/>
 
 
         <Button
+            style="@style/Button"
             android:id="@+id/proceed"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.025"
-            android:textColor="#000000"
             android:text="@string/proceed_text"
-            android:background="#2FCB71"
-            android:textSize="30dp"
             android:visibility="gone"/>
     </LinearLayout>
 

@@ -32,6 +32,7 @@ public class InventoryItemsActivity extends Activity {
   private Account account;
   Order order;
   private static List<LineItem> lineItemList;
+  String orderId;
   private int menuQuantity = 1;
   int minMenuQuantity = 1;
   double totalPrice = 0;
@@ -160,6 +161,7 @@ public class InventoryItemsActivity extends Activity {
         extras.putString("Name", menuName);
         extras.putDouble("Price", menuPrice);
         extras.putInt("imageId", menuImageId);
+        extras.putString("orderId", orderId);
         menuIntent.putExtras(extras);
         startActivity(menuIntent);
       }
@@ -169,6 +171,7 @@ public class InventoryItemsActivity extends Activity {
       @Override
       public void onClick(View v) {
         Intent orderIntent = new Intent(InventoryItemsActivity.this, OrderActivity.class);
+        orderIntent.putExtra("orderId", orderId);
         startActivity(orderIntent);
       }
     });
@@ -183,6 +186,8 @@ public class InventoryItemsActivity extends Activity {
         try {
           if (order == null) {
             order = orderConnector.createOrder(new Order());
+            orderId = order.getId();
+            Log.d(TAG, "order id " + orderId);
           }
         } catch (Exception e) {
           Log.w(TAG, "create order failed", e);
@@ -241,7 +246,10 @@ public class InventoryItemsActivity extends Activity {
       orderConnector.disconnect();
       orderConnector = null;
     }
-    lineItemList.clear();
+    if(lineItemList != null){
+      lineItemList.clear();
+    }
+
   }
 
   public static List<LineItem> getLineItemsList() {

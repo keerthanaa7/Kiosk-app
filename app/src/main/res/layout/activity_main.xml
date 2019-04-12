@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2FCB71"
+    android:background="@color/main_green"
     android:orientation="vertical">
 
     <TextView
@@ -13,8 +13,9 @@
         android:layout_weight="0.05"
         android:text="@string/welcome_screen_header"
         android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="35dp" />
+        android:textColor="@color/base_button_text_color_selector"
+        android:textSize="35dp"
+        android:background="@color/main_green"/>
 
     <ImageView
         android:layout_width="match_parent"
