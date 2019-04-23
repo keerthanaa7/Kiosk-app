@@ -8,12 +8,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="120dp"
+        android:background="@color/main_green"
+        android:paddingTop="16dp"
         android:text="@string/welcome_screen_header"
         android:textAlignment="center"
         android:textColor="@color/base_button_text_color_selector"
-        android:textSize="35dp"
-        android:paddingTop="16dp"
-        android:background="@color/main_green"/>
+        android:textSize="35dp" />
 
     <ImageView
         android:layout_width="match_parent"
@@ -34,8 +34,8 @@
             android:src="@drawable/ic_clover_os" />
 
         <Button
-            style="@style/Button"
             android:id="@+id/order_button"
+            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

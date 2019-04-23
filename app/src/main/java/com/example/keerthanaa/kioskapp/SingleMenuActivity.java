@@ -37,7 +37,6 @@ public class SingleMenuActivity extends Activity {
       Double menuPrice = extras.getDouble("Price");
       orderId = extras.getString("orderId");
       int imageId = extras.getInt("imageId");
-      Log.d(TAG, menuName + menuPrice);
 
       ImageView menuImage = (ImageView) findViewById(R.id.single_menu_image);
       menuImage.setImageResource(imageId);

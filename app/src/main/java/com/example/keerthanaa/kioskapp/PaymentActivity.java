@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -24,8 +25,16 @@ public class PaymentActivity extends Activity {
 
     Intent payIntent = getIntent();
     Double amount = payIntent.getDoubleExtra("total", 0.00);
-    TextView payView = (TextView)findViewById(R.id.pay_done);
-
+    TextView payView = (TextView) findViewById(R.id.pay_done);
     payView.setText(getResources().getString(R.string.pay_success, amount));
+
+    Button exit = (Button) findViewById(R.id.exit);
+    exit.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        finish();
+        finishAffinity();
+      }
+    });
   }
 }

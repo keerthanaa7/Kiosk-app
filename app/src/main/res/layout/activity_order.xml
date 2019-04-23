@@ -102,7 +102,7 @@
             android:layout_weight="0.7"
             android:text="@string/total_text"
             android:textSize="30dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/total"
@@ -110,7 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
             android:textSize="30dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -122,8 +122,8 @@
         android:orientation="horizontal">
 
         <Button
-            style="@style/Button"
             android:id="@+id/back_button"
+            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
@@ -132,8 +132,8 @@
 
 
         <Button
-            style="@style/Button"
             android:id="@+id/pay"
+            style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.025"

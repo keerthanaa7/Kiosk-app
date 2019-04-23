@@ -27,7 +27,6 @@ public class MainActivity extends Activity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Log.d(TAG, "on create");
     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
         // Set the content to appear under the system bars so that the
         // content doesn't resize when the system bars hide and show.
@@ -57,7 +56,6 @@ public class MainActivity extends Activity {
   protected void onResume() {
     super.onResume();
     menuItemsList.clear();
-    Log.d(TAG, "onResume");
     fetchObjectsFromServiceConnector();
   }
 

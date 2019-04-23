@@ -25,5 +25,6 @@
     <string name="back_text">Back</string>
     <string name="pay_success">$ %1$.2f payment successful.
         Thank you for your payment</string>
+    <string name="exit">Exit</string>
 
 </resources>

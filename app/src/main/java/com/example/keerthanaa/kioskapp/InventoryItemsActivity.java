@@ -2,11 +2,9 @@ package com.example.keerthanaa.kioskapp;
 
 import android.accounts.Account;
 import android.app.Activity;
-import android.content.ClipData;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,7 +40,6 @@ public class InventoryItemsActivity extends Activity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    Log.d(TAG, "oncreate");
     super.onCreate(savedInstanceState);
     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
         // Set the content to appear under the system bars so that the
@@ -58,10 +55,6 @@ public class InventoryItemsActivity extends Activity {
 
     // Create an ArrayList of customMenu objects
     ArrayList<CustomMenu> customMenus = new ArrayList<CustomMenu>();
-    for (Item item : MainActivity.getMenuItemsList()) {
-      Log.v(TAG, "item :  " + dumpItem(item));
-
-    }
     List<Item> menuList = MainActivity.getMenuItemsList();
     customMenus.add(new CustomMenu(menuList.get(0).getName(), menuList.get(0).getPrice(), R.drawable.bacon_crispy_chicken_burger, (menuList.get(0).getId())));
     customMenus.add(new CustomMenu(menuList.get(1).getName(), menuList.get(1).getPrice(), R.drawable.bbq_bacon_burger, (menuList.get(1).getId())));
@@ -96,7 +89,7 @@ public class InventoryItemsActivity extends Activity {
     TextView menuQuantityView = (TextView) findViewById(R.id.menu_quantity);
     Button addToCartView = (Button) findViewById(R.id.add_cart_text);
     Button proceedView = (Button) findViewById(R.id.proceed);
-    LinearLayout menuQuantityLayout = (LinearLayout)findViewById(R.id.menu_quantity_layout);
+    LinearLayout menuQuantityLayout = (LinearLayout) findViewById(R.id.menu_quantity_layout);
 
 
     gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -110,7 +103,7 @@ public class InventoryItemsActivity extends Activity {
         menuPrice = (menu.getMenuPrice()) / 100;
         totalPrice = menuQuantity * menuPrice;
         addToCartView.setVisibility(View.VISIBLE);
-        if(menuQuantityLayout.getVisibility() == View.GONE){
+        if (menuQuantityLayout.getVisibility() == View.GONE) {
           menuQuantityLayout.setVisibility(View.VISIBLE);
         }
         proceedView.setVisibility(View.VISIBLE);
@@ -124,7 +117,6 @@ public class InventoryItemsActivity extends Activity {
     incrementButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Log.d(TAG, "click + button");
         menuQuantity = menuQuantity + 1;
         menuQuantityView.setText(String.valueOf(menuQuantity));
         if (addToCartView.getVisibility() == View.GONE) {
@@ -138,7 +130,6 @@ public class InventoryItemsActivity extends Activity {
     decrementButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Log.d(TAG, "click - button");
         if (menuQuantity > minMenuQuantity) {
           menuQuantity = menuQuantity - 1;
           menuQuantityView.setText(String.valueOf(menuQuantity));
@@ -154,7 +145,6 @@ public class InventoryItemsActivity extends Activity {
     addToCartView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Log.d(TAG, "click add to cart button");
         addLineItemsToOrder(menuName, menuId);
         Intent menuIntent = new Intent(InventoryItemsActivity.this, SingleMenuActivity.class);
         Bundle extras = new Bundle();
@@ -187,7 +177,6 @@ public class InventoryItemsActivity extends Activity {
           if (order == null) {
             order = orderConnector.createOrder(new Order());
             orderId = order.getId();
-            Log.d(TAG, "order id " + orderId);
           }
         } catch (Exception e) {
           Log.w(TAG, "create order failed", e);
@@ -206,12 +195,10 @@ public class InventoryItemsActivity extends Activity {
           lineItem = orderConnector.addFixedPriceLineItem(order.getId(), id, name, null);
           lineItem.setUnitQty(menuQuantity);
           if (order.hasLineItems()) {
-            Log.d(TAG, "order has line items");
             lineItemList = new ArrayList<LineItem>(order.getLineItems());
           } else {
             lineItemList = new ArrayList<LineItem>();
           }
-          Log.d(TAG, "add line item to list");
           lineItemList.add(lineItem);
           order.setLineItems(lineItemList);
           orderConnector.getOrder(order.getId());
@@ -228,25 +215,13 @@ public class InventoryItemsActivity extends Activity {
   }
 
   @Override
-  protected void onResume() {
-    super.onResume();
-    Log.d(TAG, "resume");
-  }
-
-  @Override
-  protected void onPause() {
-    super.onPause();
-
-  }
-
-  @Override
   protected void onDestroy() {
     super.onDestroy();
     if (orderConnector != null) {
       orderConnector.disconnect();
       orderConnector = null;
     }
-    if(lineItemList != null){
+    if (lineItemList != null) {
       lineItemList.clear();
     }
 
