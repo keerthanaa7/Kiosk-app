@@ -34,6 +34,12 @@
         <activity
             android:name=".PaymentActivity"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ExternalDisplayActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

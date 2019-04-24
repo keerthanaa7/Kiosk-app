@@ -1,6 +1,7 @@
 package com.example.keerthanaa.kioskapp;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import java.util.List;
 public class MainActivity extends Activity {
 
   private String TAG = MainActivity.class.getSimpleName();
+  static final String NAME_EXTERNAL_ACTIVITY = "com.clover.android.extdisplay.ExternalActivity";
+  static final String ACTION_EXT_START_ACTIVITY = NAME_EXTERNAL_ACTIVITY + ".START_ACTIVITY";
 
   // this applies only to service wrapper
   private InventoryConnector inventoryConnector;
@@ -41,6 +44,8 @@ public class MainActivity extends Activity {
 
     inventoryConnector = new InventoryConnector(this, CloverAccount.getAccount(this), null);
     inventoryConnector.connect();
+
+    startActivityOnSecondaryDisplay();
 
     Button orderButton = (Button) findViewById(R.id.order_button);
     orderButton.setOnClickListener(new View.OnClickListener() {
@@ -104,5 +109,13 @@ public class MainActivity extends Activity {
       inventoryConnector = null;
     }
     super.onDestroy();
+  }
+
+  private void startActivityOnSecondaryDisplay() {
+    Intent intent = new Intent();
+    intent.setComponent(new ComponentName("com.example.keerthanaa.kioskapp", "com.example.keerthanaa.kioskapp.ExternalDisplayActivity"));
+    Intent extIntent = new Intent(ACTION_EXT_START_ACTIVITY);
+    extIntent.putExtra("activity_intent", intent);
+    sendBroadcast(extIntent);
   }
 }

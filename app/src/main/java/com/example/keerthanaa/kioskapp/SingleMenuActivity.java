@@ -63,9 +63,12 @@ public class SingleMenuActivity extends Activity {
       public void onClick(View v) {
         Intent orderIntent = new Intent(SingleMenuActivity.this, OrderActivity.class);
         orderIntent.putExtra("orderId", orderId);
+        Log.d(TAG, "order id "+ orderId);
         startActivity(orderIntent);
       }
     });
+
+
 
   }
 

@@ -21,12 +21,20 @@
         android:id="@+id/gridview_menu"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.9"
+        android:layout_weight="0.85"
         android:gravity="center"
         android:numColumns="2"
         android:stretchMode="columnWidth">
 
     </GridView>
+
+    <Button
+        android:id="@+id/kitchen_display_order"
+        style="@style/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.05"
+        android:text="@string/kitchen_display"/>
 
     <LinearLayout
         android:id="@+id/menu_quantity_layout"

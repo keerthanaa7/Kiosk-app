@@ -2,6 +2,7 @@ package com.example.keerthanaa.kioskapp;
 
 import android.accounts.Account;
 import android.app.Activity;
+import android.app.IntentService;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,7 +15,11 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.clover.common2.orders.v3.OrderUtils;
 import com.clover.sdk.util.CloverAccount;
+import com.clover.sdk.v1.printer.job.PrintJob;
+import com.clover.sdk.v1.printer.job.StaticOrderPrintJob;
+import com.clover.sdk.v1.printer.job.TestOrderPrintJob;
 import com.clover.sdk.v3.inventory.Item;
 import com.clover.sdk.v3.order.LineItem;
 import com.clover.sdk.v3.order.Order;
@@ -22,6 +27,9 @@ import com.clover.sdk.v3.order.OrderConnector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static android.content.ContentValues.TAG;
 
 public class InventoryItemsActivity extends Activity {
   private String TAG = InventoryItemsActivity.class.getSimpleName();
@@ -162,7 +170,30 @@ public class InventoryItemsActivity extends Activity {
       public void onClick(View v) {
         Intent orderIntent = new Intent(InventoryItemsActivity.this, OrderActivity.class);
         orderIntent.putExtra("orderId", orderId);
+        Log.d(TAG, "order id " + orderId);
         startActivity(orderIntent);
+      }
+    });
+
+    Button kitchenDisplayOrder = (Button) findViewById(R.id.kitchen_display_order);
+    kitchenDisplayOrder.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Log.d(TAG, "order id " + orderId);
+        Log.d(TAG, "send order to kitchen display");
+        new AsyncTask<Void, Void, Void>() {
+          @Override
+          protected Void doInBackground(Void... voids) {
+            try {
+              sendOrderToPrinter(orderConnector.getOrder(orderId));
+              orderConnector.fire2(orderId, false);
+            } catch (Exception e) {
+              Log.w(TAG, "send order to printer failed", e);
+            }
+            return null;
+          }
+        }.execute();
+
       }
     });
 
@@ -176,7 +207,7 @@ public class InventoryItemsActivity extends Activity {
         try {
           if (order == null) {
             order = orderConnector.createOrder(new Order());
-            orderId = order.getId();
+            // orderId = order.getId();
           }
         } catch (Exception e) {
           Log.w(TAG, "create order failed", e);
@@ -193,15 +224,33 @@ public class InventoryItemsActivity extends Activity {
       protected Void doInBackground(Void... voids) {
         try {
           lineItem = orderConnector.addFixedPriceLineItem(order.getId(), id, name, null);
-          lineItem.setUnitQty(menuQuantity);
+            lineItem.setUnitQty(menuQuantity);
           if (order.hasLineItems()) {
             lineItemList = new ArrayList<LineItem>(order.getLineItems());
           } else {
             lineItemList = new ArrayList<LineItem>();
           }
-          lineItemList.add(lineItem);
+
+       /*   if (lineItem != null) {
+            lineItemList.add(lineItem);
+            String lineItemId = lineItem.getId();
+
+            if (menuQuantity > 1) {
+              Log.d(TAG, "menu quantity > 1 : " + menuQuantity);
+              List<String> lineItemIds = new ArrayList<String>();
+
+              for (int j = 0; j < menuQuantity - 1; j++) {
+                lineItemIds.add(lineItemId);
+              }
+              Map<String, List<LineItem>> newLineItems = orderConnector.createLineItemsFrom(order.getId(), order.getId(), lineItemIds);
+              lineItemList.addAll(newLineItems.get(lineItemId));
+            }
+          }*/
+        lineItemList.add(lineItem);
+
+          order = orderConnector.getOrder(order.getId());
           order.setLineItems(lineItemList);
-          orderConnector.getOrder(order.getId());
+          orderId = order.getId();
         } catch (Exception e) {
           Log.w(TAG, "create order failed", e);
         }
@@ -231,4 +280,19 @@ public class InventoryItemsActivity extends Activity {
     return lineItemList;
   }
 
+  private void sendOrderToPrinter(final Order order) {
+    Log.d(TAG, "sendOrderToPrinter");
+    int printerFlag = OrderUtils.isAllItemsPrinted(order, null) ? PrintJob.FLAG_REPRINT : PrintJob.FLAG_NONE;
+    PrintJob pj = new StaticOrderPrintJob.Builder().markPrinted(true).order(order).flag( PrintJob.FLAG_REPRINT ).build();
+    print(pj);
+  }
+
+  public void print(PrintJob printJob) {
+    Log.d(TAG, "print");
+    printJob.print(this, CloverAccount.getAccount(this));
+  }
+
 }
+
+
+

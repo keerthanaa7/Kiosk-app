@@ -20,5 +20,6 @@ android {
 }
 
 dependencies {
-    implementation 'com.clover.sdk:clover-android-sdk:225-SNAPSHOT'
+    implementation 'com.clover.sdk:clover-android-sdk:229-SNAPSHOT'
+    implementation 'com.clover:common-orders:257-SNAPSHOT'
 }
