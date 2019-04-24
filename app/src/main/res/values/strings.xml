@@ -26,5 +26,6 @@
     <string name="pay_success">$ %1$.2f payment successful.
         Thank you for your payment</string>
     <string name="exit">Exit</string>
+    <string name="welcome_external_display">Welcome to Clover Cafe</string>
 
 </resources>

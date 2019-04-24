@@ -1,9 +1,11 @@
 package com.example.keerthanaa.kioskapp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
@@ -33,26 +35,24 @@ public class OrderActivity extends Activity {
   String orderId;
 
   private String TAG = OrderActivity.class.getSimpleName();
-  static final String NAME_EXTERNAL_ACTIVITY = "com.clover.android.extdisplay.ExternalActivity";
-  static final String ACTION_EXT_START_ACTIVITY = NAME_EXTERNAL_ACTIVITY + ".START_ACTIVITY";
-  static final String EXTRA_EXT_ACTIVITY_INTENT = "activity_intent";
-  static final String ACTION_EXT_START_ACTIVITY_RESULT_SUCCESS = NAME_EXTERNAL_ACTIVITY + ".START_ACTIVITY_RESULT_SUCCESS";
-  static final String ACTION_EXT_START_ACTIVITY_RESULT_FAILURE = NAME_EXTERNAL_ACTIVITY + ".START_ACTIVITY_RESULT_FAILURE";
 
-  private class ExtLaunchResultReceiver extends BroadcastReceiver {
+  static final String ACTION_START_SECURE_PAYMENT = "clover.intent.action.START_SECURE_PAYMENT_EXTERNAL_DISPLAY";
+  static final String ACTION_SECURE_PAYMENT_FINISH = "clover.intent.action.SECURE_PAYMENT_EXTERNAL_DISPLAY_FINISH";
+
+  private class ExtDispLaunchResultReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-      Intent activityIntent = intent.getParcelableExtra(EXTRA_EXT_ACTIVITY_INTENT);
-      if (ACTION_EXT_START_ACTIVITY_RESULT_SUCCESS.equalsIgnoreCase(intent.getAction())) {
-        Intent payIntent = new Intent(OrderActivity.this, PaymentActivity.class);
-        payIntent.putExtra("total", total);
-        startActivity(payIntent);
-      } else if (ACTION_EXT_START_ACTIVITY_RESULT_FAILURE.equalsIgnoreCase(intent.getAction())) {
+      if (intent.getAction() == null) {
+        return;
+      }
+      Log.d(TAG, "Got action " + intent.getAction());
+      if (ACTION_SECURE_PAYMENT_FINISH.equals(intent.getAction())) {
+        showPayFinishDialog();
       }
     }
   }
 
-  private BroadcastReceiver extLaunchResultReceiver;
+  private BroadcastReceiver extDispLaunchResultReceiver;
 
 
   @Override
@@ -115,79 +115,60 @@ public class OrderActivity extends Activity {
     payButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(ACTION_SECURE_PAY);
-
-        PayIntent payIntent = new PayIntent.Builder()
-            .amount((new Double(total * 100)).longValue())
-            .orderId(orderId)
-            .action(Intents.ACTION_SECURE_CARD_DATA)
-            .cardEntryMethods(Intents.CARD_ENTRY_METHOD_ALL)
-            .build();
-        payIntent.addTo(intent);
-        Intent extIntent = new Intent(ACTION_EXT_START_ACTIVITY);
-        extIntent.putExtra("activity_intent", intent);
-        sendBroadcast(extIntent);
+        Intent extDisaplyIntent = new Intent(ACTION_START_SECURE_PAYMENT);
+        extDisaplyIntent.putExtra("orderId", orderId);
+        extDisaplyIntent.putExtra("total", total);
+        showPayInProgressDialog();
+        sendBroadcast(extDisaplyIntent);
       }
     });
 
   }
 
+  private void showPayFinishDialog() {
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setMessage("Payment Completed");
+    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
+      }
+    });
+    AlertDialog dialog = builder.create();
+    dialog.show();
+  }
+
+  private void showPayInProgressDialog() {
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setMessage("Payment in Progress");
+    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
+      }
+    });
+    AlertDialog dialog = builder.create();
+    dialog.show();
+  }
+
   @Override
   protected void onStart() {
     super.onStart();
-    if (extLaunchResultReceiver == null) {
-      extLaunchResultReceiver = new ExtLaunchResultReceiver();
+    if (extDispLaunchResultReceiver == null) {
+      extDispLaunchResultReceiver = new ExtDispLaunchResultReceiver();
       IntentFilter filter = new IntentFilter();
-      filter.addAction(ACTION_EXT_START_ACTIVITY_RESULT_SUCCESS);
-      filter.addAction(ACTION_EXT_START_ACTIVITY_RESULT_FAILURE);
-      registerReceiver(extLaunchResultReceiver, filter);
+      filter.addAction(ACTION_SECURE_PAYMENT_FINISH);
+      registerReceiver(extDispLaunchResultReceiver, filter);
     }
   }
 
   @Override
   protected void onStop() {
-    if (extLaunchResultReceiver != null) {
-      unregisterReceiver(extLaunchResultReceiver);
-      extLaunchResultReceiver = null;
+    if (extDispLaunchResultReceiver != null) {
+      unregisterReceiver(extDispLaunchResultReceiver);
+      extDispLaunchResultReceiver = null;
     }
     super.onStop();
-  }
-
-  private void pay() {
-    final Intent intent = new Intent();
-    new AsyncTask<Void, Void, Void>() {
-      @Override
-      protected Void doInBackground(Void... voids) {
-
-        try {
-          TransactionSettings txSettings = new TransactionSettings();
-          txSettings.setAllowOfflinePayment(true);
-          txSettings.setApproveOfflinePaymentWithoutPrompt(true);
-          txSettings.setAutoAcceptPaymentConfirmations(true);
-          txSettings.setAutoAcceptSignature(true);
-          txSettings.setCloverShouldHandleReceipts(false);
-          txSettings.setDisableDuplicateCheck(true);
-          txSettings.setDisableCashBack(true);
-          txSettings.setDisableReceiptSelection(true);
-          txSettings.setDisableRestartTransactionOnFailure(true);
-          txSettings.setSignatureEntryLocation(DataEntryLocation.NONE);
-          txSettings.setCardEntryMethods(Intents.CARD_ENTRY_METHOD_ALL);
-
-          PayIntent pi = new PayIntent.Builder()
-              .amount((new Double(total * 100)).longValue())
-              .orderId(orderId)
-              .transactionSettings(txSettings)
-              .action("com.clover.remote.protocol.dualdisplay.action.START_REMOTE_PROTOCOL_PAY")
-              .build();
-          pi.addTo(intent);
-          startActivityForResult(intent, 100);
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-
-        return null;
-      }
-    }.execute();
   }
 
   @Override
