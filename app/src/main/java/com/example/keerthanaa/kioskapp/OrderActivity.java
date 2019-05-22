@@ -111,6 +111,9 @@ public class OrderActivity extends Activity {
     TextView totalView = (TextView) findViewById(R.id.total);
     totalView.setText(getResources().getString(R.string.total, total));
 
+    Button exitButton = (Button) findViewById(R.id.exit_button);
+    exitButton.setVisibility(View.GONE);
+
     Button backButton = (Button) findViewById(R.id.back_button);
     backButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -123,11 +126,22 @@ public class OrderActivity extends Activity {
     payButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        payButton.setEnabled(false);
+        backButton.setEnabled(false);
+        exitButton.setVisibility(View.VISIBLE);
         Intent extDisaplyIntent = new Intent(ACTION_START_SECURE_PAYMENT);
         extDisaplyIntent.putExtra("orderId", orderId);
         extDisaplyIntent.putExtra("total", total);
         showPayInProgressDialog();
         sendBroadcast(extDisaplyIntent);
+      }
+    });
+
+    exitButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        finish();
+        finishAffinity();
       }
     });
 
