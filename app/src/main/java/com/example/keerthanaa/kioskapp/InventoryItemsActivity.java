@@ -170,7 +170,6 @@ public class InventoryItemsActivity extends Activity {
       public void onClick(View v) {
         Intent orderIntent = new Intent(InventoryItemsActivity.this, OrderActivity.class);
         orderIntent.putExtra("orderId", orderId);
-        Log.d(TAG, "order id " + orderId);
         startActivity(orderIntent);
       }
     });
@@ -179,8 +178,6 @@ public class InventoryItemsActivity extends Activity {
     kitchenDisplayOrder.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Log.d(TAG, "order id " + orderId);
-        Log.d(TAG, "send order to kitchen display");
         new AsyncTask<Void, Void, Void>() {
           @Override
           protected Void doInBackground(Void... voids) {
@@ -231,7 +228,7 @@ public class InventoryItemsActivity extends Activity {
             lineItemList = new ArrayList<LineItem>();
           }
 
-       /*   if (lineItem != null) {
+          if (lineItem != null) {
             lineItemList.add(lineItem);
             String lineItemId = lineItem.getId();
 
@@ -245,8 +242,8 @@ public class InventoryItemsActivity extends Activity {
               Map<String, List<LineItem>> newLineItems = orderConnector.createLineItemsFrom(order.getId(), order.getId(), lineItemIds);
               lineItemList.addAll(newLineItems.get(lineItemId));
             }
-          }*/
-        lineItemList.add(lineItem);
+          }
+       // lineItemList.add(lineItem);
 
           order = orderConnector.getOrder(order.getId());
           order.setLineItems(lineItemList);
@@ -281,14 +278,12 @@ public class InventoryItemsActivity extends Activity {
   }
 
   private void sendOrderToPrinter(final Order order) {
-    Log.d(TAG, "sendOrderToPrinter");
     int printerFlag = OrderUtils.isAllItemsPrinted(order, null) ? PrintJob.FLAG_REPRINT : PrintJob.FLAG_NONE;
     PrintJob pj = new StaticOrderPrintJob.Builder().markPrinted(true).order(order).flag( PrintJob.FLAG_REPRINT ).build();
     print(pj);
   }
 
   public void print(PrintJob printJob) {
-    Log.d(TAG, "print");
     printJob.print(this, CloverAccount.getAccount(this));
   }
 

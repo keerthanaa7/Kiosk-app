@@ -70,19 +70,26 @@ public class OrderActivity extends Activity {
     setContentView(R.layout.activity_order);
     Intent orderIntent = getIntent();
     orderId = orderIntent.getStringExtra("orderId");
-    Log.d(TAG, "order id "+ orderId);
+    Log.d(TAG, "order id " + orderId);
     Double tax;
 
     // Create an {@link MenuOrderAdapter}, whose data source is a list of
     // {@link MenuOrder}s. The adapter knows how to create list item views for each item
     // in the list.
 
+    String menuName = "";
     ArrayList<MenuOrder> menuOrders = new ArrayList<MenuOrder>();
     menuOrderList = InventoryItemsActivity.getLineItemsList();
     if (menuOrderList != null) {
       for (int i = 0; i < menuOrderList.size(); i++) {
-        menuOrders.add(new MenuOrder(menuOrderList.get(i).getName(), (menuOrderList.get(i).getPrice()) * (menuOrderList.get(i).getUnitQty()), menuOrderList.get(i).getUnitQty()));
-        subtotal = subtotal + (menuOrderList.get(i).getPrice()) * (menuOrderList.get(i).getUnitQty());
+        Log.d(TAG, "item name : " + menuOrderList.get(i).getName());
+        if (menuName.equals(menuOrderList.get(i).getName())) {
+
+        } else {
+          menuOrders.add(new MenuOrder(menuOrderList.get(i).getName(), (menuOrderList.get(i).getPrice()) * (menuOrderList.get(i).getUnitQty()), menuOrderList.get(i).getUnitQty()));
+          subtotal = subtotal + (menuOrderList.get(i).getPrice()) * (menuOrderList.get(i).getUnitQty());
+        }
+        menuName = menuOrderList.get(i).getName();
       }
     }
 
