@@ -1,5 +1,6 @@
 package com.example.keerthanaa.kioskapp;
 
+import android.accounts.Account;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -16,9 +17,15 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.clover.common2.orders.v3.OrderUtils;
 import com.clover.common2.payments.PayIntent;
+import com.clover.sdk.util.CloverAccount;
 import com.clover.sdk.v1.Intents;
+import com.clover.sdk.v1.printer.job.PrintJob;
+import com.clover.sdk.v1.printer.job.StaticOrderPrintJob;
 import com.clover.sdk.v3.order.LineItem;
+import com.clover.sdk.v3.order.Order;
+import com.clover.sdk.v3.order.OrderConnector;
 import com.clover.sdk.v3.payments.DataEntryLocation;
 import com.clover.sdk.v3.payments.Payment;
 import com.clover.sdk.v3.payments.TransactionSettings;
@@ -33,6 +40,9 @@ public class OrderActivity extends Activity {
   Double subtotal = 0.0;
   Double total = 0.0;
   String orderId;
+  Button exitButton;
+  private OrderConnector orderConnector;
+  private Account account;
 
   private String TAG = OrderActivity.class.getSimpleName();
 
@@ -47,6 +57,7 @@ public class OrderActivity extends Activity {
       }
       Log.d(TAG, "Got action " + intent.getAction());
       if (ACTION_SECURE_PAYMENT_FINISH.equals(intent.getAction())) {
+        exitButton.setVisibility(View.VISIBLE);
         showPayFinishDialog();
       }
     }
@@ -70,6 +81,10 @@ public class OrderActivity extends Activity {
     setContentView(R.layout.activity_order);
     Intent orderIntent = getIntent();
     orderId = orderIntent.getStringExtra("orderId");
+
+    account = CloverAccount.getAccount(this);
+    orderConnector = new OrderConnector(this, account, null);
+    orderConnector.connect();
     Log.d(TAG, "order id " + orderId);
     Double tax;
 
@@ -111,7 +126,7 @@ public class OrderActivity extends Activity {
     TextView totalView = (TextView) findViewById(R.id.total);
     totalView.setText(getResources().getString(R.string.total, total));
 
-    Button exitButton = (Button) findViewById(R.id.exit_button);
+    exitButton = (Button) findViewById(R.id.exit_button);
     exitButton.setVisibility(View.GONE);
 
     Button backButton = (Button) findViewById(R.id.back_button);
@@ -121,14 +136,15 @@ public class OrderActivity extends Activity {
         finish();
       }
     });
-
+    Button kitchenDisplayOrder = (Button) findViewById(R.id.kitchen_display_order);
     Button payButton = (Button) findViewById(R.id.pay);
     payButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         payButton.setEnabled(false);
         backButton.setEnabled(false);
-        exitButton.setVisibility(View.VISIBLE);
+        kitchenDisplayOrder.setVisibility(View.GONE);
+
         Intent extDisaplyIntent = new Intent(ACTION_START_SECURE_PAYMENT);
         extDisaplyIntent.putExtra("orderId", orderId);
         extDisaplyIntent.putExtra("total", total);
@@ -145,6 +161,35 @@ public class OrderActivity extends Activity {
       }
     });
 
+
+    kitchenDisplayOrder.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        new AsyncTask<Void, Void, Void>() {
+          @Override
+          protected Void doInBackground(Void... voids) {
+            try {
+              sendOrderToPrinter(orderConnector.getOrder(orderId));
+              orderConnector.fire2(orderId, false);
+            } catch (Exception e) {
+              Log.w(TAG, "send order to printer failed", e);
+            }
+            return null;
+          }
+        }.execute();
+
+      }
+    });
+
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    if (orderConnector != null) {
+      orderConnector.disconnect();
+      orderConnector = null;
+    }
   }
 
   private void showPayFinishDialog() {
@@ -206,5 +251,15 @@ public class OrderActivity extends Activity {
       startActivity(payIntent);
     }
     super.onActivityResult(requestCode, resultCode, data);
+  }
+
+  private void sendOrderToPrinter(final Order order) {
+    int printerFlag = OrderUtils.isAllItemsPrinted(order, null) ? PrintJob.FLAG_REPRINT : PrintJob.FLAG_NONE;
+    PrintJob pj = new StaticOrderPrintJob.Builder().markPrinted(true).order(order).flag(PrintJob.FLAG_REPRINT).build();
+    print(pj);
+  }
+
+  public void print(PrintJob printJob) {
+    printJob.print(this, CloverAccount.getAccount(this));
   }
 }

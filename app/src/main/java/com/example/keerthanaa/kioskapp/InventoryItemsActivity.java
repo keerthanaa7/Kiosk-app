@@ -160,6 +160,7 @@ public class InventoryItemsActivity extends Activity {
         extras.putDouble("Price", menuPrice);
         extras.putInt("imageId", menuImageId);
         extras.putString("orderId", orderId);
+
         menuIntent.putExtras(extras);
         startActivity(menuIntent);
       }
@@ -243,7 +244,6 @@ public class InventoryItemsActivity extends Activity {
               lineItemList.addAll(newLineItems.get(lineItemId));
             }
           }
-       // lineItemList.add(lineItem);
 
           order = orderConnector.getOrder(order.getId());
           order.setLineItems(lineItemList);

@@ -115,14 +115,20 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/kitchen_display_order"
+        style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.025"
+        android:text="@string/kitchen_display"/>
+
+    <Button
         android:id="@+id/exit_button"
         style="@style/Button"
         android:layout_height="0dp"
         android:layout_width="match_parent"
-        android:layout_weight="0.05"
-        android:text="@string/exit"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"/>
+        android:layout_weight="0.025"
+        android:text="@string/exit"/>
 
     <LinearLayout
         android:layout_width="match_parent"
